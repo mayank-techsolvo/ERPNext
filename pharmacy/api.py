@@ -2,8 +2,8 @@ import frappe, json
 from frappe.utils.data import escape_html
 from frappe.website.utils import is_signup_disabled
 
-def sign_up(email: str, full_name: str, first_name, last_name,age, mobile_no) -> tuple[int, str]:
-
+def sign_up(email: str, first_name, last_name,age, mobile_no, role) -> tuple[int, str]:
+	full_name = first_name + " " + last_name
 	user = frappe.db.get("User", {"email": email})
 	if user:
 		if user.enabled:
@@ -24,13 +24,20 @@ def sign_up(email: str, full_name: str, first_name, last_name,age, mobile_no) ->
 		user.flags.ignore_permissions = True
 		user.flags.ignore_password_policy = True
 		user.insert()
-		user.first_name = first_name
-		user.last_name = last_name
-		user.mobile_no = mobile_no
-		user.age = age
+
+		if mobile_no:
+			user.mobile_no = mobile_no
+		if first_name:
+			user.first_name = first_name
+		if last_name:
+			user.last_name = last_name
+		if age:
+			user.age = age
 
 		# set default signup role as per Portal Settings
 		default_role = frappe.db.get_single_value("Portal Settings", "default_role")
+		if role == "Shopkeeper":
+			user.add_roles(role)
 		if default_role:
 			user.add_roles(default_role)
 
@@ -39,13 +46,7 @@ def sign_up(email: str, full_name: str, first_name, last_name,age, mobile_no) ->
 # Signup endpoint
 @frappe.whitelist(allow_guest=True)
 def user_signup(email, first_name, last_name, age, mobile_no, role):
-    # Validate input data
-    # Handle validation errors
-    full_name = first_name + " " + last_name
-    # Call Frappe's signup function
-    user_data = sign_up(email, full_name, first_name, last_name,age,mobile_no)
-    print("user", user_data)
-    # Return success response
+    user_data = sign_up(email, first_name, last_name,age,mobile_no, role)
     return json.dumps({"message": f"{user_data} registered successfully"})
 
 from frappe import auth
@@ -94,39 +95,3 @@ def generate_keys(user):
 	user_details.save()
 	return api_secret
 		
-###  
-# Login endpoint
-# @frappe.whitelist(allow_guest=True)
-# def user_login(email, password):
-#     # Authenticate user
-#     user = authenticate(email, password)
-
-#     # Check if authentication was successful
-#     if user:
-#         # Create session for the user
-#         frappe.local.login_manager.user = user.name
-#         frappe.local.login_manager.post_login()
-
-#         # Return success response with user information
-#         return jsonify({"message": "Login successful", "user": user.as_dict()})
-#     else:
-#         # Return error response
-#         return jsonify({"message": "Invalid credentials"})
-# curl -X POST \
-#   http://127.0.0.1:8000/api/method/pharmacy.api.user_signup \
-#   -H 'Content-Type: application/json' \
-#   -d '{
-#     "email": "mrwwf@gmail.com",
-#     "password": "password123",  
-#     "first_name": "John",
-#     "last_name": "Doe",
-#     "age": 30,
-#     "role": "Customer"  
-# }'   
-# hooks.py
-# from .api import user_signup#, user_login
-
-# # Whitelisted methods
-# whitelist = ["user_signup"]
-
-# api.py
