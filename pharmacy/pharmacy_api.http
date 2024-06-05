@@ -1,0 +1,57 @@
+# GET http://127.0.0.1:8000/api/method/frappe.auth.get_logged_user
+# Authorization: Bearer 49d929ef37af30d8587d8578eb2e2dc160eaecf8ca226e548f9c7437
+
+#Delete Data
+# DELETE http://127.0.0.1:8000/api/resource/Product Category/Homeopathy
+# Authorization: Bearer 49d929ef37af30d8587d8578eb2e2dc160eaecf8ca226e548f9c7437
+
+# Update the data in a doctype
+# PUT http://127.0.0.1:8000/api/resource/Product Category/Antiseptic
+# Content-Type: application/json
+# Authorization: Bearer 49d929ef37af30d8587d8578eb2e2dc160eaecf8ca226e548f9c7437
+
+# {
+#   "category_name": "Telepathy",
+#   "description": "Testing the API"
+# }
+
+#read single data
+# Get http://127.0.0.1:8000/api/resource/Product Category/Antiseptic
+# Content-Type: application/json
+# Authorization: Bearer 49d929ef37af30d8587d8578eb2e2dc160eaecf8ca226e548f9c7437
+
+
+# Create new data
+# POST http://127.0.0.1:8000/api/resource/Product Category
+# Content-Type: application/json
+# Authorization: Bearer 49d929ef37af30d8587d8578eb2e2dc160eaecf8ca226e548f9c7437
+
+# {
+#   "category_name": "Homeopathy"
+# }
+
+
+
+# get doctype datalist
+# GET http://127.0.0.1:8000/api/resource/Product Category
+# Authorization: Bearer 49d929ef37af30d8587d8578eb2e2dc160eaecf8ca226e548f9c7437
+
+#login api   
+GET http://127.0.0.1:8000/api/method/pharmacy.api.login
+Content-Type: application/json
+
+{
+  "mobile_no": "7746924541"
+}
+    
+# curl -X POST \
+#   http://127.0.0.1:8000/api/method/pharmacy.api.user_signup \
+#   -H 'Content-Type: application/json' \
+#   -d '{
+#     "email": "mrwvxcvwf@gmail.com",
+#     "mobile_no":"4646524121",
+#     "first_name": "John",
+#     "last_name": "Doe",
+#     "age": 30,
+#     "role": "Customer"  
+# }'   

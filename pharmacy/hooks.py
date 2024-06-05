@@ -1,3 +1,9 @@
+# hooks.py
+from .api import user_signup#, user_login
+
+# Whitelisted methods
+whitelist = ["user_signup"]
+
 app_name = "pharmacy"
 app_title = "Pharmacy"
 app_publisher = "Smile"
@@ -57,7 +63,6 @@ app_license = "mit"
 
 # Jinja
 # ----------
-
 # add methods and filters to jinja environment
 # jinja = {
 # 	"methods": "pharmacy.utils.jinja_methods",

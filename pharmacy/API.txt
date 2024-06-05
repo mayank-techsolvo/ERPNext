@@ -1,0 +1,41 @@
+Signup
+url: http://127.0.0.1:8000/api/method/pharmacy.api.user_signup
+headers: {
+    Content-Type: application/json
+},
+body: {
+        "email": "mrwwf@gmail.com",
+        "password": "password123",
+        "mobile_no":"547825425",  
+        "first_name": "John",
+        "last_name": "Doe",
+        "age": 30,
+        "role": "Customer"  
+}
+
+response: {
+    "message": "{\"message\": \"User(mrwvxcvwf@gmail.com) registered successfully\"}",
+    "_server_messages": "[\"{\\\"message\\\": \\\"Please setup default outgoing Email Account from Settings > Email Account\\\", \\\"title\\\": \\\"Message\\\", \\\"alert\\\": 1}\"]"
+  }    
+
+Login
+GET: http://127.0.0.1:8000/api/method/pharmacy.api.login
+headers: {
+    Content-Type: application/json
+},
+body: {
+        "mobile_no":"547825425",  
+}
+
+response: {
+    "message": {
+      "success_key": 1,
+      "message": "Authentication success",
+      "sid": "416962bb706a20c5d7c6090146c5d06c295e17b1508bfd82ef08a81b",
+      "api_key": null,
+      "api_secret": "a02a2d4a4676156",
+      "email": "testuser1@gmail.com"
+    },
+    "home_page": "/app",
+    "full_name": "Test User"
+  }
