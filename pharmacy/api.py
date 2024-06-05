@@ -75,7 +75,7 @@ def login(mobile_no):
             "success_key":1,
             "message":"Authentication success",
             "sid":frappe.session.sid,
-            "api_key":user.api_key,
+            # "api_key":user.api_key,
             "api_secret": api_generate,
             "email": user.email
         }
