@@ -59,7 +59,7 @@ def login(mobile_no):
 	if user_data.email:
 		try:
 			login_manager = auth.LoginManager()
-			login_manager.authenticate(user=user_data.email, pwd="HelloWorld1")
+			login_manager.authenticate(user=user_data.email, pwd="HelloWorld")
 			login_manager.post_login()
 		except frappe.exceptions.AuthenticationError as e:
 			frappe.clear_messages()
