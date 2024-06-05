@@ -23,8 +23,6 @@ def sign_up(email: str, first_name, last_name,age, mobile_no, role) -> tuple[int
 		)
 		user.flags.ignore_permissions = True
 		user.flags.ignore_password_policy = True
-		user.insert()
-
 		if mobile_no:
 			user.mobile_no = mobile_no
 		if first_name:
@@ -33,6 +31,8 @@ def sign_up(email: str, first_name, last_name,age, mobile_no, role) -> tuple[int
 			user.last_name = last_name
 		if age:
 			user.age = age
+		user.insert()
+
 
 		# set default signup role as per Portal Settings
 		default_role = frappe.db.get_single_value("Portal Settings", "default_role")
