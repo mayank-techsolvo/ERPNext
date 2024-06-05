@@ -1,8 +1,8 @@
 # hooks.py
-from .api import user_signup#, user_login
+from .api import user_signup, login
 
 # Whitelisted methods
-whitelist = ["user_signup"]
+whitelist = ["user_signup", "login"]
 
 app_name = "pharmacy"
 app_title = "Pharmacy"
