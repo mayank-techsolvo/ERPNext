@@ -61,11 +61,12 @@ def login(mobile_no):
 			login_manager = auth.LoginManager()
 			login_manager.authenticate(user=user_data.email, pwd="HelloWorld1")
 			login_manager.post_login()
-		except frappe.exceptions.AuthenticationError:
+		except frappe.exceptions.AuthenticationError as e:
 			frappe.clear_messages()
 			frappe.local.response["message"] = {
                 "success_key": 0,
-                "message":"Authentication Error!"
+                "message":"Authentication Error!",
+				"error":e
             }
 			return
 		api_generate = generate_keys(frappe.session.user)
