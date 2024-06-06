@@ -17,7 +17,7 @@ def sign_up(email: str, first_name, last_name,age, mobile_no, role) -> tuple[int
 				"email": email,
 				"first_name": escape_html(full_name),
 				"enabled": 1,
-				"new_password": "HelloWorld",
+				"new_password": "HelloWorld1",
 				"user_type": "Website User",
 			}
 		)
