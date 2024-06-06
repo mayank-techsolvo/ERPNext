@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:product",
+ "autoname": "field:variant",
  "creation": "2024-06-05 18:56:28.689910",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -29,12 +29,13 @@
   {
    "fieldname": "variant",
    "fieldtype": "Data",
-   "label": "Variant"
+   "label": "Variant",
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-05 18:58:45.488887",
+ "modified": "2024-06-06 18:18:01.611213",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Product Variant",
