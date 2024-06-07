@@ -1,6 +1,5 @@
-import frappe, json
-from frappe.utils.data import escape_html
-from frappe.website.utils import is_signup_disabled
+import frappe
+from frappe.utils.data import now_datetime
 
 def sign_up( phone, role, email) -> tuple[int, str]:
 	# full_name = first_name + " " + last_name
@@ -78,7 +77,7 @@ def login_user(user_data):
 				return
 		api_generate = generate_keys(frappe.session.user)
 		user=frappe.get_doc("User", frappe.session.user)
-		frappe.response['message'] = {
+		frappe.response['data'] = {
             "message":"Login successful",
 			"data":{
 				"user":user,
