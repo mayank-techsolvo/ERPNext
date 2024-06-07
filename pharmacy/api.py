@@ -8,7 +8,7 @@ def sign_up( phone, role, email) -> tuple[int, str]:
 			{
 				"doctype": "User",
 				"email": email,
-				# "first_name": escape_html(full_name),
+				"first_name": "test",
 				"enabled": 1,
 				"new_password": "HelloWorld1",
 				"user_type": "Website User",
