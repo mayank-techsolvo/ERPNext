@@ -44,17 +44,18 @@ def user_signup(email, first_name, last_name, age, mobile_no, role):
     # return json.dumps({"message": f"{user_data} registered successfully"})
 
 from frappe import auth
-
+import random
 @frappe.whitelist(allow_guest=True)
 def login(phone, role):
 	print(phone)
+	email=f"test{random.randint(1, 100)}@mail.com"
 	user_data=None
 	try:
 		user_data=frappe.get_doc("User", {"phone":phone})
 	except:
 		pass
 	if not user_data:
-		user_data = sign_up(phone, role, email="test2@mail.com")
+		user_data = sign_up(phone, role, email=email)
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
                 "success_key": 0,
