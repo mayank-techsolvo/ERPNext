@@ -2,20 +2,13 @@ import frappe, json
 from frappe.utils.data import escape_html
 from frappe.website.utils import is_signup_disabled
 
-def sign_up(email: str, first_name, last_name,age, mobile_no, role) -> tuple[int, str]:
-	full_name = first_name + " " + last_name
-	user = frappe.db.get("User", {"email": email})
-	if user:
-		if user.enabled:
-			return 0, _("Already Registered")
-		else:
-			return 0, _("Registered but disabled")
-	else:
+def sign_up( phone, role, email) -> tuple[int, str]:
+	# full_name = first_name + " " + last_name
 		user = frappe.get_doc(
 			{
 				"doctype": "User",
 				"email": email,
-				"first_name": escape_html(full_name),
+				# "first_name": escape_html(full_name),
 				"enabled": 1,
 				"new_password": "HelloWorld1",
 				"user_type": "Website User",
@@ -23,14 +16,14 @@ def sign_up(email: str, first_name, last_name,age, mobile_no, role) -> tuple[int
 		)
 		user.flags.ignore_permissions = True
 		user.flags.ignore_password_policy = True
-		if mobile_no:
-			user.mobile_no = mobile_no
-		if first_name:
-			user.first_name = first_name
-		if last_name:
-			user.last_name = last_name
-		if age:
-			user.age = age
+		if phone:
+			user.phone = phone
+		# if first_name:
+		# 	user.first_name = first_name
+		# if last_name:
+		# 	user.last_name = last_name
+		# if age:
+		# 	user.age = age
 		user.insert()
 
 
@@ -46,45 +39,53 @@ def sign_up(email: str, first_name, last_name,age, mobile_no, role) -> tuple[int
 # Signup endpoint
 @frappe.whitelist(allow_guest=True)
 def user_signup(email, first_name, last_name, age, mobile_no, role):
-    user_data = sign_up(email, first_name, last_name,age,mobile_no, role)
-    return json.dumps({"message": f"{user_data} registered successfully"})
+	pass
+    # user_data = sign_up(email, first_name, last_name,age,mobile_no, role)
+    # return json.dumps({"message": f"{user_data} registered successfully"})
 
 from frappe import auth
 
 @frappe.whitelist(allow_guest=True)
-def login(mobile_no):
-	print(mobile_no)
-	user_data=frappe.get_doc("User", {"mobile_no":mobile_no})
-	print(user_data.email)
-	if user_data.email:
-		try:
-			login_manager = auth.LoginManager()
-			login_manager.authenticate(user=user_data.email, pwd="HelloWorld1")
-			login_manager.post_login()
-		except frappe.exceptions.AuthenticationError as e:
-			frappe.clear_messages()
-			frappe.local.response["message"] = {
-                "success_key": 0,
-                "message":"Authentication Error!",
-				"error":e
-            }
-			return
-		api_generate = generate_keys(frappe.session.user)
-		user=frappe.get_doc("User", frappe.session.user)
-		frappe.response['message'] = {
-            "success_key":1,
-            "message":"Authentication success",
-            "sid":frappe.session.sid,
-            # "api_key":user.api_key,
-            "api_secret": api_generate,
-            "email": user.email
-        }
-	else:
+def login(phone, role):
+	print(phone)
+	user_data=None
+	try:
+		user_data=frappe.get_doc("User", {"phone":phone})
+	except:
+		pass
+	if not user_data:
+		user_data = sign_up(phone, role, email="test2@mail.com")
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
                 "success_key": 0,
                 "message":"Authentication Error!"
             }
+	login_user(user_data)
+
+def login_user(user_data):
+		try:
+				login_manager = auth.LoginManager()
+				login_manager.authenticate(user=user_data.email, pwd="HelloWorld1")
+				login_manager.post_login()
+		except frappe.exceptions.AuthenticationError as e:
+				frappe.clear_messages()
+				frappe.local.response["message"] = {
+					"success_key": 0,
+					"message":"Authentication Error!",
+					"error":e
+				}
+				return
+		api_generate = generate_keys(frappe.session.user)
+		user=frappe.get_doc("User", frappe.session.user)
+		frappe.response['message'] = {
+            "message":"Login successful",
+			"data":{
+				"user":user,
+				"token":frappe.session.sid,
+				"expire_in": frappe.session.session_expiry,
+				"type":"Bearer"
+			}
+			}
 
 def generate_keys(user):
 	user_details = frappe.get_doc("User", user)
