@@ -46,6 +46,8 @@ from frappe import auth
 import random
 @frappe.whitelist(allow_guest=True)
 def login(phone, role):
+	# frappe.local.login_manager.logout()
+	# frappe.db.commit()
 	print(phone)
 	email=f"test{random.randint(1, 100)}@mail.com"
 	user_data=None
@@ -97,3 +99,9 @@ def generate_keys(user):
 	user_details.save()
 	return api_secret
 		
+import frappe.model.rename_doc as rd
+@frappe.whitelist(allow_guest=True)
+def edit_profile():
+	print("hello")
+	rd.rename_doc("User", "test30@mail.com", "raghuvanshimayank88@gmail.com", force=True)
+	
