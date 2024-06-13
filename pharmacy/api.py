@@ -101,7 +101,6 @@ def generate_keys(user):
 		
 import frappe.model.rename_doc as rd
 @frappe.whitelist(allow_guest=True)
-def edit_profile():
-	print("hello")
-	rd.rename_doc("User", "test30@mail.com", "raghuvanshimayank88@gmail.com", force=True)
+def edit_profile(old, new):
+	rd.rename_doc("User", old, new, force=True)
 	
