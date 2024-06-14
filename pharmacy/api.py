@@ -102,46 +102,50 @@ def generate_keys(user):
 import frappe.model.rename_doc as rd
 @frappe.whitelist()
 def edit_profile(phone, email, full_name, age, gender):
-	try:
-		user_data=frappe.get_doc("User", {"phone":phone})
-		if user_data.enabled == 0:
-			frappe.response['http_status_code'] = 403  # Forbidden
-			frappe.response['data'] = {
-                "message": f"User {user_data.email} is disabled. Please contact your System Manager."
-            }
-			return
-		user_data.flags.ignore_permissions = True
-		user_data.flags.ignore_password_policy = True
-		if phone:
-			user_data.phone = phone
-		if full_name:
-			user_data.first_name = full_name.split(" ")[0]
-			user_data.last_name = full_name.split(" ")[-1]
-		if age:
-			user_data.age = age
-		if gender:
-			user_data.gender = gender
-		user_data.save()
-		if email:
-			old = user_data.email
-			rd.rename_doc("User", old, email, force=True)
-		frappe.response['data'] = {
-			"status":200,
-            "message":"Data updated successfully",
-			}
-	except frappe.exceptions.AuthenticationError as e:
-				frappe.clear_messages()
-				frappe.local.response["message"] = {
-					"success_key": 0,
-					"message":"Authentication Error!",
-					"error":e
+	if phone:
+		try:
+			user_data=frappe.get_doc("User", {"phone":phone})
+			if user_data.enabled == 0:
+				frappe.response['http_status_code'] = 403  # Forbidden
+				frappe.response['data'] = {
+					"message": f"User {user_data.email} is disabled. Please contact your System Manager."
 				}
-	except frappe.exceptions.ValidationError as v:
+				return
+			user_data.flags.ignore_permissions = True
+			user_data.flags.ignore_password_policy = True
+			if full_name:
+				user_data.first_name = full_name.split(" ")[0]
+				user_data.last_name = full_name.split(" ")[-1]
+			if age:
+				user_data.age = age
+			if gender:
+				user_data.gender = gender
+			user_data.save()
+			if email:
+				old = user_data.email
+				rd.rename_doc("User", old, email, force=True)
+			frappe.response['data'] = {
+				"status":200,
+				"message":"Data updated successfully",
+				}
+		except frappe.exceptions.AuthenticationError as e:
+					frappe.clear_messages()
+					frappe.local.response["message"] = {
+						"success_key": 0,
+						"message":"Authentication Error!",
+						"error":e
+					}
+		except frappe.exceptions.ValidationError as v:
 			frappe.clear_messages()
 			frappe.local.response["message"] = {
 					"success_key": 0,
 					"error": v
 				}
-
+	else:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+				"success_key": 0,
+				"error": "Phone not found"
+			}
 
 	
