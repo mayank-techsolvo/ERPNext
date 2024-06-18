@@ -1,42 +1,26 @@
 {
  "actions": [],
- "creation": "2024-06-05 18:56:28.689910",
+ "allow_rename": 1,
+ "creation": "2024-06-17 18:19:42.769179",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "product",
-  "product_id",
-  "variant"
+  "product"
  ],
  "fields": [
   {
    "fieldname": "product",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Product",
-   "options": "Product",
-   "read_only": 1,
-   "unique": 1
-  },
-  {
-   "fetch_from": "product.product_name",
-   "fieldname": "product_id",
-   "fieldtype": "Data",
-   "label": "Product Id"
-  },
-  {
-   "fieldname": "variant",
-   "fieldtype": "Data",
-   "label": "Variant",
-   "unique": 1
+   "options": "Product"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-17 17:24:07.001285",
+ "modified": "2024-06-17 18:31:09.562948",
  "modified_by": "Administrator",
  "module": "Pharmacy",
- "name": "Product Variant",
+ "name": "Testing",
  "owner": "Administrator",
  "permissions": [
   {

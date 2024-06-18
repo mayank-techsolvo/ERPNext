@@ -1,6 +1,6 @@
 import frappe
 from frappe.utils.data import now_datetime
-
+from frappe import _
 def sign_up( phone, role, email) -> tuple[int, str]:
 	# full_name = first_name + " " + last_name
 		user = frappe.get_doc(
@@ -48,7 +48,7 @@ import random
 def login(phone, role):
 	# frappe.local.login_manager.logout()
 	# frappe.db.commit()
-	print(phone)
+	# print(phone)
 	email=f"test{random.randint(1, 100)}@mail.com"
 	user_data=None
 	try:
@@ -144,8 +144,161 @@ def edit_profile(phone, email, full_name, age, gender):
 	else:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
-				"success_key": 0,
-				"error": "Phone not found"
+			"success_key": 0,
+			"error": "Phone not found"
 			}
 
-	
+
+@frappe.whitelist()
+def categories():
+	try:
+		categories = frappe.get_all('Product Category', fields=['name', 'category_name', 'description'])
+		response = []
+		for category in categories:
+			
+			subcategories = frappe.get_all(
+                'Product Sub Category',
+                filters={'category_name': category['name']},
+                fields=['name', 'subcategory_name', 'description']
+            )
+			response.append({
+				"id": category['name'],
+                'category_name': category['category_name'],
+                'description': category.get('description', ''),
+                'subcategories': subcategories
+            })
+
+		return response
+	except frappe.exceptions.AuthenticationError as e:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "Authentication Error!",
+            "error": str(e)
+        }
+	except frappe.exceptions.ValidationError as v:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "error": str(v)
+        }
+
+
+@frappe.whitelist()
+def products(category_name=None, subcategory_name=None):
+	try:
+		response = []
+		if category_name:
+			categories = frappe.get_all(
+				'Product Category',
+				filters={'category_name': category_name},
+				fields=['name', 'category_name', 'description']
+		    )
+			# return categories
+			for category in categories:
+				subcategories = frappe.get_all(
+				    'Product Sub Category',
+				    filters={'category_name': category['name']},
+				    fields=['name', 'subcategory_name', 'description']
+				)
+				# return subcategories
+				for subcategory in subcategories:
+					print("subcategory",subcategory)
+					products = frappe.get_all(
+						'Product',
+						filters={
+						    'subcategory_name': subcategory['name']
+						},
+						fields=[
+						    'name',
+							'product_name',
+						    'description',
+						    'price',
+						    'usage',
+						    'side_effects',
+						    'alternative',
+							'subcategory_name'
+						]
+				    )
+					for product in products:
+						product_detail = {
+						    'id': product['name'],
+							'name':product.get('product_name', ''),
+						    'description': product.get('description', ''),
+						    'price': product.get('price', 0.0),
+						    'usage': product.get('usage', ''),
+						    'side_effects': product.get('side_effects', ''),
+						    'alternative': product.get('alternative', None),
+						    'category': {
+								'id':category['name'],
+								'category_name': category['category_name'],
+								'description': category.get('description', ''),
+								'subcategories': [{
+									'id': subcategory['name'],
+								    'subcategory_name': subcategory['subcategory_name'],
+								    'subcategory_description': subcategory.get('description', '')
+								}]
+						    }
+						}
+
+						# Add the detailed product to the response
+						response.append(product_detail)
+					return response
+		elif subcategory_name:
+			subcategories = frappe.get_all(
+				'Product Sub Category',
+				filters={'subcategory_name': subcategory_name},
+				fields=['name', 'subcategory_name', 'description', 'category_name']
+		    )
+			for subcategory in subcategories:
+				category = frappe.get_doc('Product Category', subcategory['category_name'])
+				products = frappe.get_all(
+				    'Product',
+				    filters={
+						'subcategory_name': subcategory['name']
+				    },
+				    fields=[
+						'name',
+						'product_name',
+						'description',
+						'price',
+						'usage',
+						'side_effects',
+						'alternative'
+				    ]
+				)
+				# For each product, add category and subcategory details
+				for product in products:
+					product_detail = {
+						'id': product['name'],
+						'name':product.get('product_name', ''),
+						'description': product.get('description', ''),
+						'price': product.get('price', 0.0),
+						'usage': product.get('usage', ''),
+						'side_effects': product.get('side_effects', ''),
+						'alternative': product.get('alternative', None),
+						'category': {
+						    'category_name': category.category_name,
+						    'description': category.description,
+						    'subcategories': [{
+								'subcategory_name': subcategory['subcategory_name'],
+								'subcategory_description': subcategory.get('description', '')
+						    }]
+						}
+				    }
+					response.append(product_detail)
+				return response
+	except frappe.exceptions.AuthenticationError as e:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+		    "success_key": 0,
+		    "message": "Authentication Error!",
+		    "error": str(e)
+		}
+	except frappe.exceptions.ValidationError as v:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+		    "success_key": 0,
+		    "error": str(v)
+		}
+
