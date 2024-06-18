@@ -1,7 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
- "autoname": "field:category_name",
+ "autoname": "hash",
  "creation": "2024-06-04 15:32:29.382267",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -25,12 +24,17 @@
   }
  ],
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2024-06-04 15:39:49.872763",
+ "links": [
+  {
+   "link_doctype": "Product",
+   "link_fieldname": "subcategory_name"
+  }
+ ],
+ "modified": "2024-06-18 11:02:40.026957",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Product Category",
- "naming_rule": "By fieldname",
+ "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
   {
@@ -47,7 +51,9 @@
   }
  ],
  "quick_entry": 1,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "category_name"
 }
