@@ -101,7 +101,7 @@ def generate_keys(user):
 		
 import frappe.model.rename_doc as rd
 @frappe.whitelist()
-def edit_profile(phone, email, full_name, age, gender):
+def edit_profile(phone, email, fullname, age, gender):
 	if phone:
 		try:
 			user_data=frappe.get_doc("User", {"phone":phone})
@@ -113,9 +113,9 @@ def edit_profile(phone, email, full_name, age, gender):
 				return
 			user_data.flags.ignore_permissions = True
 			user_data.flags.ignore_password_policy = True
-			if full_name:
-				user_data.first_name = full_name.split(" ")[0]
-				user_data.last_name = full_name.split(" ")[-1]
+			if fullname:
+				user_data.first_name = fullname.split(" ")[0]
+				user_data.last_name = fullname.split(" ")[-1]
 			if age:
 				user_data.age = age
 			if gender:
