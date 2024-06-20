@@ -152,14 +152,14 @@ def edit_profile(phone, email, fullname, age, gender):
 @frappe.whitelist()
 def categories():
 	try:
-		categories = frappe.get_all('Product Category', fields=['name', 'category_name', 'description'])
+		categories = frappe.get_all('Product Category', fields=['name', 'category_name', 'description', 'icon'])
 		response = []
 		for category in categories:
 			
 			subcategories = frappe.get_all(
                 'Product Sub Category',
                 filters={'category_name': category['name']},
-                fields=['name', 'subcategory_name', 'description']
+                fields=['name', 'subcategory_name', 'description', 'icon']
             )
 			response.append({
 				"id": category['name'],
@@ -192,14 +192,14 @@ def products(category_name=None, subcategory_name=None):
 			categories = frappe.get_all(
 				'Product Category',
 				filters={'category_name': category_name},
-				fields=['name', 'category_name', 'description']
+				fields=['name', 'category_name', 'description', 'icon']
 		    )
 			# return categories
 			for category in categories:
 				subcategories = frappe.get_all(
 				    'Product Sub Category',
 				    filters={'category_name': category['name']},
-				    fields=['name', 'subcategory_name', 'description']
+				    fields=['name', 'subcategory_name', 'description', 'icon']
 				)
 				# return subcategories
 				for subcategory in subcategories:
