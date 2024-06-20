@@ -165,6 +165,7 @@ def categories():
 				"id": category['name'],
                 'category_name': category['category_name'],
                 'description': category.get('description', ''),
+				'icon':category.get('icon'),
                 'subcategories': subcategories
             })
 
