@@ -184,15 +184,16 @@ def categories():
 						    'usage': product.get('usage', ''),
 						    'side_effects': product.get('side_effects', ''),
 						    'alternative': product.get('alternative', None),
-						    'category': {
-								'id':category['name'],
-								'category_name': category['category_name'],
-								'description': category.get('description', ''),
-						    }
 						}
 
 						# Add the detailed product to the response
-						response.append(product_detail)
+						response.append({
+				"id": category['name'],
+                'category_name': category['category_name'],
+                'description': category.get('description', ''),
+				'icon':category.get('icon'),
+                'products': product_detail
+            })
 		# for category in categories:
 			
 		# 	subcategories = frappe.get_all(
