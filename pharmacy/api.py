@@ -173,6 +173,7 @@ def categories():
 							'category_name'
 						]
 				    )
+					product_data = []
 					for product in products:
 						product_detail = {
 						    'id': product['name'],
@@ -185,15 +186,15 @@ def categories():
 						    'side_effects': product.get('side_effects', ''),
 						    'alternative': product.get('alternative', None),
 						}
-
+						product_data.append(product_detail)
 						# Add the detailed product to the response
-						response.append({
-				"id": category['name'],
-                'category_name': category['category_name'],
-                'description': category.get('description', ''),
-				'icon':category.get('icon'),
-                'products': product_detail
-            })
+					response.append({
+			"id": category['name'],
+			'category_name': category['category_name'],
+			'description': category.get('description', ''),
+			'icon':category.get('icon'),
+			'products': product_data
+		})
 		# for category in categories:
 			
 		# 	subcategories = frappe.get_all(
