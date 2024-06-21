@@ -213,6 +213,7 @@ def products(category_name=None, subcategory_name=None):
 						fields=[
 						    'name',
 							'product_name',
+							'icon',
 						    'description',
 						    'price',
 						    'usage',
@@ -225,6 +226,7 @@ def products(category_name=None, subcategory_name=None):
 						product_detail = {
 						    'id': product['name'],
 							'name':product.get('product_name', ''),
+							'icon':product.get('icon', ''),
 						    'description': product.get('description', ''),
 						    'price': product.get('price', 0.0),
 						    'usage': product.get('usage', ''),
