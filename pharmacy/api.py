@@ -185,7 +185,7 @@ def categories():
         }
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def products(category_name=None, subcategory_name=None):
 	try:
 		response = []
@@ -289,6 +289,57 @@ def products(category_name=None, subcategory_name=None):
 				    }
 					response.append(product_detail)
 				return response
+		else:
+			categories = frappe.get_all(
+				'Product Category',
+				fields=['name', 'category_name', 'description', 'icon']
+		    )
+			# return categories
+			for category in categories:
+				subcategories = frappe.get_all(
+				    'Product Sub Category',
+				    fields=['name', 'subcategory_name', 'description', 'icon']
+				)
+				# return subcategories
+				for subcategory in subcategories:
+					print("subcategory",subcategory)
+					products = frappe.get_all(
+						'Product',
+						fields=[
+						    'name',
+							'product_name',
+						    'description',
+						    'price',
+						    'usage',
+						    'side_effects',
+						    'alternative',
+							'subcategory_name'
+						]
+				    )
+					for product in products:
+						product_detail = {
+						    'id': product['name'],
+							'name':product.get('product_name', ''),
+						    'description': product.get('description', ''),
+						    'price': product.get('price', 0.0),
+						    'usage': product.get('usage', ''),
+						    'side_effects': product.get('side_effects', ''),
+						    'alternative': product.get('alternative', None),
+						    'category': {
+								'id':category['name'],
+								'category_name': category['category_name'],
+								'description': category.get('description', ''),
+								'subcategories': [{
+									'id': subcategory['name'],
+								    'subcategory_name': subcategory['subcategory_name'],
+								    'subcategory_description': subcategory.get('description', '')
+								}]
+						    }
+						}
+
+						# Add the detailed product to the response
+						response.append(product_detail)
+					return response
 	except frappe.exceptions.AuthenticationError as e:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
