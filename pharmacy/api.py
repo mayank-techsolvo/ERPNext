@@ -100,7 +100,7 @@ def generate_keys(user):
 	return api_secret
 		
 import frappe.model.rename_doc as rd
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def edit_profile(phone, email, fullname, age, gender):
 	if phone:
 		try:
