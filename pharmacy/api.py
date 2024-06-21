@@ -312,6 +312,7 @@ def products(category_name=None, subcategory_name=None):
 						fields=[
 						    'name',
 							'icon',
+							'expiry',
 							'product_name',
 						    'description',
 						    'price',
@@ -326,6 +327,7 @@ def products(category_name=None, subcategory_name=None):
 						    'id': product['name'],
 							'name':product.get('product_name', ''),
 							'icon':product.get('icon', ''),
+							'expiry':product.get('expiry', ''),
 						    'description': product.get('description', ''),
 						    'price': product.get('price', 0.0),
 						    'usage': product.get('usage', ''),
