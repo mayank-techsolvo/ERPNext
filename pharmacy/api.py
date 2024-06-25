@@ -229,27 +229,16 @@ def categories():
 @frappe.whitelist(allow_guest=True)
 def products(category_name=None, subcategory_name=None):
 	try:
+		if(category_name):
+			categories = frappe.get_all('Product Category', filters={'category_name': category_name}, fields=['name', 'category_name', 'description', 'icon'])
+		else:
+			categories = frappe.get_all('Product Category', fields=['name', 'category_name', 'description', 'icon'])
 		response = []
-		if category_name:
-			categories = frappe.get_all(
-				'Product Category',
-				filters={'category_name': category_name},
-				fields=['name', 'category_name', 'description', 'icon']
-		    )
-			# return categories
-			for category in categories:
-				subcategories = frappe.get_all(
-				    'Product Sub Category',
-				    filters={'category_name': category['name']},
-				    fields=['name', 'subcategory_name', 'description', 'icon']
-				)
-				# return subcategories
-				for subcategory in subcategories:
-					print("subcategory",subcategory)
+		for category in categories:
 					products = frappe.get_all(
 						'Product',
 						filters={
-						    'subcategory_name': subcategory['name']
+						    'category_name': category['name']
 						},
 						fields=[
 						    'name',
@@ -261,9 +250,10 @@ def products(category_name=None, subcategory_name=None):
 						    'usage',
 						    'side_effects',
 						    'alternative',
-							'subcategory_name'
+							'category_name'
 						]
 				    )
+					product_data = []
 					for product in products:
 						product_detail = {
 						    'id': product['name'],
@@ -275,135 +265,221 @@ def products(category_name=None, subcategory_name=None):
 						    'usage': product.get('usage', ''),
 						    'side_effects': product.get('side_effects', ''),
 						    'alternative': product.get('alternative', None),
-						    'category': {
-								'id':category['name'],
-								'category_name': category['category_name'],
-								'description': category.get('description', ''),
-								'subcategories': [{
-									'id': subcategory['name'],
-								    'subcategory_name': subcategory['subcategory_name'],
-								    'subcategory_description': subcategory.get('description', '')
-								}]
-						    }
 						}
-
+						product_data.append(product_detail)
 						# Add the detailed product to the response
-						response.append(product_detail)
-					return response
-		elif subcategory_name:
-			subcategories = frappe.get_all(
-				'Product Sub Category',
-				filters={'subcategory_name': subcategory_name},
-				fields=['name', 'subcategory_name', 'description', 'category_name']
-		    )
-			for subcategory in subcategories:
-				category = frappe.get_doc('Product Category', subcategory['category_name'])
-				products = frappe.get_all(
-				    'Product',
-				    filters={
-						'subcategory_name': subcategory['name']
-				    },
-				    fields=[
-						'name',
-						'icon',
-						'expiry',
-						'product_name',
-						'description',
-						'price',
-						'usage',
-						'side_effects',
-						'alternative'
-				    ]
-				)
-				# For each product, add category and subcategory details
-				for product in products:
-					product_detail = {
-						'id': product['name'],
-						'name':product.get('product_name', ''),
-						'icon':product.get('icon', ''),
-						'expiry':product.get('expiry', ''),
-						'description': product.get('description', ''),
-						'price': product.get('price', 0.0),
-						'usage': product.get('usage', ''),
-						'side_effects': product.get('side_effects', ''),
-						'alternative': product.get('alternative', None),
-						'category': {
-						    'category_name': category.category_name,
-						    'description': category.description,
-						    'subcategories': [{
-								'subcategory_name': subcategory['subcategory_name'],
-								'subcategory_description': subcategory.get('description', '')
-						    }]
-						}
-				    }
-					response.append(product_detail)
-				return response
-		else:
-			categories = frappe.get_all(
-				'Product Category',
-				fields=['name', 'category_name', 'description', 'icon']
-		    )
-			# return categories
-			for category in categories:
-				subcategories = frappe.get_all(
-				    'Product Sub Category',
-				    fields=['name', 'subcategory_name', 'description', 'icon']
-				)
-				# return subcategories
-				for subcategory in subcategories:
-					print("subcategory",subcategory)
-					products = frappe.get_all(
-						'Product',
-						fields=[
-						    'name',
-							'icon',
-							'expiry',
-							'product_name',
-						    'description',
-						    'price',
-						    'usage',
-						    'side_effects',
-						    'alternative',
-							'subcategory_name'
-						]
-				    )
-					for product in products:
-						product_detail = {
-						    'id': product['name'],
-							'name':product.get('product_name', ''),
-							'icon':product.get('icon', ''),
-							'expiry':product.get('expiry', ''),
-						    'description': product.get('description', ''),
-						    'price': product.get('price', 0.0),
-						    'usage': product.get('usage', ''),
-						    'side_effects': product.get('side_effects', ''),
-						    'alternative': product.get('alternative', None),
-						    'category': {
-								'id':category['name'],
-								'category_name': category['category_name'],
-								'description': category.get('description', ''),
-								'subcategories': [{
-									'id': subcategory['name'],
-								    'subcategory_name': subcategory['subcategory_name'],
-								    'subcategory_description': subcategory.get('description', '')
-								}]
-						    }
-						}
+					response.append({
+			"id": category['name'],
+			'category_name': category['category_name'],
+			'description': category.get('description', ''),
+			'icon':category.get('icon'),
+			'products': product_data
+		})
+		# for category in categories:
+			
+		# 	subcategories = frappe.get_all(
+        #         'Product Sub Category',
+        #         filters={'category_name': category['name']},
+        #         fields=['name', 'subcategory_name', 'description', 'icon']
+        #     )
+		# 	response.append({
+		# 		"id": category['name'],
+        #         'category_name': category['category_name'],
+        #         'description': category.get('description', ''),
+		# 		'icon':category.get('icon'),
+        #         'subcategories': subcategories
+        #     })
 
-						# Add the detailed product to the response
-						response.append(product_detail)
-					return response
+		return response
 	except frappe.exceptions.AuthenticationError as e:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
-		    "success_key": 0,
-		    "message": "Authentication Error!",
-		    "error": str(e)
-		}
+            "success_key": 0,
+            "message": "Authentication Error!",
+            "error": str(e)
+        }
 	except frappe.exceptions.ValidationError as v:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
-		    "success_key": 0,
-		    "error": str(v)
-		}
+            "success_key": 0,
+            "error": str(v)
+        }
+	# try:
+	# 	response = []
+	# 	if category_name:
+	# 		categories = frappe.get_all(
+	# 			'Product Category',
+	# 			filters={'category_name': category_name},
+	# 			fields=['name', 'category_name', 'description', 'icon']
+	# 	    )
+	# 		# return categories
+	# 		for category in categories:
+	# 			subcategories = frappe.get_all(
+	# 			    'Product Sub Category',
+	# 			    filters={'category_name': category['name']},
+	# 			    fields=['name', 'subcategory_name', 'description', 'icon']
+	# 			)
+	# 			# return subcategories
+	# 			for subcategory in subcategories:
+	# 				print("subcategory",subcategory)
+	# 				products = frappe.get_all(
+	# 					'Product',
+	# 					filters={
+	# 					    'subcategory_name': subcategory['name']
+	# 					},
+	# 					fields=[
+	# 					    'name',
+	# 						'product_name',
+	# 						'icon',
+	# 						'expiry',
+	# 					    'description',
+	# 					    'price',
+	# 					    'usage',
+	# 					    'side_effects',
+	# 					    'alternative',
+	# 						'subcategory_name'
+	# 					]
+	# 			    )
+	# 				for product in products:
+	# 					product_detail = {
+	# 					    'id': product['name'],
+	# 						'name':product.get('product_name', ''),
+	# 						'icon':product.get('icon', ''),
+	# 						'expiry':product.get('expiry', ''),
+	# 					    'description': product.get('description', ''),
+	# 					    'price': product.get('price', 0.0),
+	# 					    'usage': product.get('usage', ''),
+	# 					    'side_effects': product.get('side_effects', ''),
+	# 					    'alternative': product.get('alternative', None),
+	# 					    'category': {
+	# 							'id':category['name'],
+	# 							'category_name': category['category_name'],
+	# 							'description': category.get('description', ''),
+	# 							'subcategories': [{
+	# 								'id': subcategory['name'],
+	# 							    'subcategory_name': subcategory['subcategory_name'],
+	# 							    'subcategory_description': subcategory.get('description', '')
+	# 							}]
+	# 					    }
+	# 					}
+
+	# 					# Add the detailed product to the response
+	# 					response.append(product_detail)
+	# 				return response
+	# 	elif subcategory_name:
+	# 		subcategories = frappe.get_all(
+	# 			'Product Sub Category',
+	# 			filters={'subcategory_name': subcategory_name},
+	# 			fields=['name', 'subcategory_name', 'description', 'category_name']
+	# 	    )
+	# 		for subcategory in subcategories:
+	# 			category = frappe.get_doc('Product Category', subcategory['category_name'])
+	# 			products = frappe.get_all(
+	# 			    'Product',
+	# 			    filters={
+	# 					'subcategory_name': subcategory['name']
+	# 			    },
+	# 			    fields=[
+	# 					'name',
+	# 					'icon',
+	# 					'expiry',
+	# 					'product_name',
+	# 					'description',
+	# 					'price',
+	# 					'usage',
+	# 					'side_effects',
+	# 					'alternative'
+	# 			    ]
+	# 			)
+	# 			# For each product, add category and subcategory details
+	# 			for product in products:
+	# 				product_detail = {
+	# 					'id': product['name'],
+	# 					'name':product.get('product_name', ''),
+	# 					'icon':product.get('icon', ''),
+	# 					'expiry':product.get('expiry', ''),
+	# 					'description': product.get('description', ''),
+	# 					'price': product.get('price', 0.0),
+	# 					'usage': product.get('usage', ''),
+	# 					'side_effects': product.get('side_effects', ''),
+	# 					'alternative': product.get('alternative', None),
+	# 					'category': {
+	# 					    'category_name': category.category_name,
+	# 					    'description': category.description,
+	# 					    'subcategories': [{
+	# 							'subcategory_name': subcategory['subcategory_name'],
+	# 							'subcategory_description': subcategory.get('description', '')
+	# 					    }]
+	# 					}
+	# 			    }
+	# 				response.append(product_detail)
+	# 			return response
+	# 	else:
+	# 		categories = frappe.get_all(
+	# 			'Product Category',
+	# 			fields=['name', 'category_name', 'description', 'icon']
+	# 	    )
+	# 		# return categories
+	# 		for category in categories:
+	# 			subcategories = frappe.get_all(
+	# 			    'Product Sub Category',
+	# 			    fields=['name', 'subcategory_name', 'description', 'icon']
+	# 			)
+	# 			# return subcategories
+	# 			for subcategory in subcategories:
+	# 				print("subcategory",subcategory)
+	# 				products = frappe.get_all(
+	# 					'Product',
+	# 					fields=[
+	# 					    'name',
+	# 						'icon',
+	# 						'expiry',
+	# 						'product_name',
+	# 					    'description',
+	# 					    'price',
+	# 					    'usage',
+	# 					    'side_effects',
+	# 					    'alternative',
+	# 						'subcategory_name'
+	# 					]
+	# 			    )
+	# 				for product in products:
+	# 					product_detail = {
+	# 					    'id': product['name'],
+	# 						'name':product.get('product_name', ''),
+	# 						'icon':product.get('icon', ''),
+	# 						'expiry':product.get('expiry', ''),
+	# 					    'description': product.get('description', ''),
+	# 					    'price': product.get('price', 0.0),
+	# 					    'usage': product.get('usage', ''),
+	# 					    'side_effects': product.get('side_effects', ''),
+	# 					    'alternative': product.get('alternative', None),
+	# 					    'category': {
+	# 							'id':category['name'],
+	# 							'category_name': category['category_name'],
+	# 							'description': category.get('description', ''),
+	# 							'subcategories': [{
+	# 								'id': subcategory['name'],
+	# 							    'subcategory_name': subcategory['subcategory_name'],
+	# 							    'subcategory_description': subcategory.get('description', '')
+	# 							}]
+	# 					    }
+	# 					}
+
+	# 					# Add the detailed product to the response
+	# 					response.append(product_detail)
+	# 				return response
+	# except frappe.exceptions.AuthenticationError as e:
+	# 	frappe.clear_messages()
+	# 	frappe.local.response["message"] = {
+	# 	    "success_key": 0,
+	# 	    "message": "Authentication Error!",
+	# 	    "error": str(e)
+	# 	}
+	# except frappe.exceptions.ValidationError as v:
+	# 	frappe.clear_messages()
+	# 	frappe.local.response["message"] = {
+	# 	    "success_key": 0,
+	# 	    "error": str(v)
+	# 	}
 
