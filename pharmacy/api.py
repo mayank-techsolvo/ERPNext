@@ -228,10 +228,10 @@ def categories():
 
 @frappe.whitelist(allow_guest=True)
 def products(category_name=None, subcategory_name=None):
+	response = []
 	try:
 		if(category_name):
 			categories = frappe.get_all('Product Category', filters={'category_name': category_name}, fields=['name', 'category_name', 'description', 'icon'])
-			response = []
 			for category in categories:
 						products = frappe.get_all(
 							'Product',
@@ -263,6 +263,7 @@ def products(category_name=None, subcategory_name=None):
 								'usage': product.get('usage', ''),
 								'side_effects': product.get('side_effects', ''),
 								'alternative': product.get('alternative', None),
+								'category_name':product.get('category_name', None)
 							}
 							product_data.append(product_detail)
 							# Add the detailed product to the response
@@ -317,6 +318,8 @@ def products(category_name=None, subcategory_name=None):
 					'usage': product.get('usage', ''),
 					'side_effects': product.get('side_effects', ''),
 					'alternative': product.get('alternative', None),
+					'category_name':product.get('category_name', None)
+
 				}
 				product_data.append(product_detail)
 				# Add the detailed product to the response
