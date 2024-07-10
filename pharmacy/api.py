@@ -572,6 +572,7 @@ def orders(phone):
 				order_details = {
                     'order_id': order.name,
 					'status':order.status,
+					'modified':order.modified,
 					'order_price':order.order_price,
 					'payment_status': order.payment_status,
                     'products': products
