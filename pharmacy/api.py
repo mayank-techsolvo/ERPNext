@@ -541,7 +541,7 @@ def orders(phone):
 			orders = frappe.get_all(
                 "Orders",
                 filters={'phone': phone},
-                fields=['name','status','order_price', 'payment_status']
+                fields=['name','status','order_price', 'payment_status', 'modified']
             )
 			for order in orders:
 				order_products = frappe.get_all(
@@ -556,6 +556,7 @@ def orders(phone):
                         filters={'name': order_product.product},
                         fields=[
                             'name',
+							'product_name',
                             'icon',
                             'expiry',
                             'description',
