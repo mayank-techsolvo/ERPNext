@@ -533,4 +533,61 @@ def products(category_name=None, subcategory_name=None):
 	# 	    "success_key": 0,
 	# 	    "error": str(v)
 	# 	}
+@frappe.whitelist()
+def orders(phone):
+	response = []
+	try:
+		if phone:
+			orders = frappe.get_all(
+                "Orders",
+                filters={'phone': phone},
+                fields=['name','status','order_price', 'payment_status']
+            )
+			for order in orders:
+				order_products = frappe.get_all(
+                    "PIO",  # Replace with the correct child table doctype name
+                    filters={'parent': order.name},
+                    fields=['product', 'quantity' ]
+                )
+				products = []
+				for order_product in order_products:
+					product_details = frappe.get_all(
+                        "Product",  # Replace with the correct product doctype name
+                        filters={'name': order_product.product},
+                        fields=[
+                            'name',
+                            'icon',
+                            'expiry',
+                            'description',
+                            'price',
+                            'usage',
+                            'side_effects',
+                            'alternative',
+                            'category_name'
+                        ]
+                    )
+					if product_details:
+							products.append(product_details[0])
+				order_details = {
+                    'order_id': order.name,
+					'status':order.status,
+					'order_price':order.order_price,
+					'payment_status': order.payment_status,
+                    'products': products
+                }
+				response.append(order_details)
+			return response
+	except frappe.exceptions.AuthenticationError as e:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "Authentication Error!",
+            "error": str(e)
+        }
+	except frappe.exceptions.ValidationError as v:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "error": str(v)
+        }
 
