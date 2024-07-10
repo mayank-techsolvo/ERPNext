@@ -552,42 +552,43 @@ def orders(phone):
                 filters={'phone': phone},
                 fields=['name','status','order_price', 'payment_status', 'modified']
             )
-			for order in orders:
-				order_products = frappe.get_all(
-                    "PIO",  # Replace with the correct child table doctype name
-                    filters={'parent': order.name},
-                    fields=['product', 'quantity' ]
-                )
-				products = []
-				for order_product in order_products:
-					product_details = frappe.get_all(
-                        "Product",  # Replace with the correct product doctype name
-                        filters={'name': order_product.product},
-                        fields=[
-                            'name',
-							'product_name',
-                            'icon',
-                            'expiry',
-                            'description',
-                            'price',
-                            'usage',
-                            'side_effects',
-                            'alternative',
-                            'category_name'
-                        ]
-                    )
-					if product_details:
-							products.append(product_details[0])
-				order_details = {
-                    'order_id': order.name,
-					'status':order.status,
-					'modified':format_date(order.modified),
-					'order_price':order.order_price,
-					'payment_status': order.payment_status,
-                    'products': products
-                }
-				response.append(order_details)
-			return response
+			if orders:
+				for order in orders:
+					order_products = frappe.get_all(
+						"PIO",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['product', 'quantity' ]
+					)
+					products = []
+					for order_product in order_products:
+						product_details = frappe.get_all(
+							"Product",  # Replace with the correct product doctype name
+							filters={'name': order_product.product},
+							fields=[
+								'name',
+								'product_name',
+								'icon',
+								'expiry',
+								'description',
+								'price',
+								'usage',
+								'side_effects',
+								'alternative',
+								'category_name'
+							]
+						)
+						if product_details:
+								products.append(product_details[0])
+					order_details = {
+						'order_id': order.name,
+						'status':order.status,
+						'modified':format_date(order.modified),
+						'order_price':order.order_price,
+						'payment_status': order.payment_status,
+						'products': products
+					}
+					response.append(order_details)
+		return response
 	except frappe.exceptions.AuthenticationError as e:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
