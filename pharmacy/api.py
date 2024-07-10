@@ -533,6 +533,15 @@ def products(category_name=None, subcategory_name=None):
 	# 	    "success_key": 0,
 	# 	    "error": str(v)
 	# 	}
+
+from datetime import datetime
+
+def format_date(date_string):
+    date = datetime.strptime(str(date_string), "%Y-%m-%d %H:%M:%S.%f")
+    formatted_date = date.strftime("%a, %d %b %Y")
+    
+    return {formatted_date}
+
 @frappe.whitelist()
 def orders(phone):
 	response = []
@@ -572,7 +581,7 @@ def orders(phone):
 				order_details = {
                     'order_id': order.name,
 					'status':order.status,
-					'modified':order.modified,
+					'modified':format_date(order.modified),
 					'order_price':order.order_price,
 					'payment_status': order.payment_status,
                     'products': products
