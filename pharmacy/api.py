@@ -176,8 +176,8 @@ def categories():
 					product_data = []
 					for product in products:
 						product_detail = {
-						    'id': product['name'],
-							'name':product.get('product_name', ''),
+						    'name': product['name'],
+							'product_name':product.get('product_name', ''),
 							'icon':product.get('icon', ''),
 							'expiry':product.get('expiry', ''),
 						    'description': product.get('description', ''),
@@ -254,8 +254,8 @@ def products(category_name=None, subcategory_name=None):
 						product_data = []
 						for product in products:
 							product_detail = {
-								'id': product['name'],
-								'name':product.get('product_name', ''),
+								'name': product['name'],
+								'product_name':product.get('product_name', ''),
 								'icon':product.get('icon', ''),
 								'expiry':product.get('expiry', ''),
 								'description': product.get('description', ''),
@@ -309,8 +309,8 @@ def products(category_name=None, subcategory_name=None):
 			product_data = []
 			for product in products:
 				product_detail = {
-					'id': product['name'],
-					'name':product.get('product_name', ''),
+					'name': product['name'],
+					'product_name':product.get('product_name', ''),
 					'icon':product.get('icon', ''),
 					'expiry':product.get('expiry', ''),
 					'description': product.get('description', ''),
