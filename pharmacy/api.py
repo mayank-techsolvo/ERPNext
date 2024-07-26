@@ -160,6 +160,7 @@ def categories():
 						filters={
 						    'category_name': category['name']
 						},
+						limit=10,
 						fields=[
 						    'name',
 							'product_name',
