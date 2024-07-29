@@ -544,14 +544,14 @@ def format_date(date_string):
     return {formatted_date}
 
 @frappe.whitelist()
-def orders(phone):
+def orders(phone=None):
 	response = []
 	try:
 		if phone:
 			orders = frappe.get_all(
                 "Orders",
                 filters={'phone': phone},
-                fields=['name','status','order_price', 'payment_status', 'modified']
+                fields=['name','status','order_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount']
             )
 			if orders:
 				for order in orders:
@@ -586,10 +586,58 @@ def orders(phone):
 						'modified':format_date(order.modified),
 						'order_price':order.order_price,
 						'payment_status': order.payment_status,
+						'discount': order.discount,
+						'payable_amount': order.payable_amount,
+						'order_price': order.order_price,
+						'products': products
+					}
+					response.append(order_details)
+		else:
+			orders = frappe.get_all(
+                "Orders",
+                fields=['name','status','order_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount']
+            )
+			if orders:
+				for order in orders:
+					order_products = frappe.get_all(
+						"PIO",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['product', 'quantity' ]
+					)
+					products = []
+					for order_product in order_products:
+						product_details = frappe.get_all(
+							"Product",  # Replace with the correct product doctype name
+							filters={'name': order_product.product},
+							fields=[
+								'name',
+								'product_name',
+								'icon',
+								'expiry',
+								'description',
+								'price',
+								'usage',
+								'side_effects',
+								'alternative',
+								'category_name'
+							]
+						)
+						if product_details:
+								products.append(product_details[0])
+					order_details = {
+						'order_id': order.name,
+						'status':order.status,
+						'modified':format_date(order.modified),
+						'order_price':order.order_price,
+						'payment_status': order.payment_status,
+						'discount': order.discount,
+						'payable_amount': order.payable_amount,
+						'order_price': order.order_price,
 						'products': products
 					}
 					response.append(order_details)
 		return response
+	
 	except frappe.exceptions.AuthenticationError as e:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
@@ -605,7 +653,7 @@ def orders(phone):
         }
 
 @frappe.whitelist()
-def order(id):
+def order(id=None):
 	response = []
 	try:
 		if id:
@@ -614,7 +662,7 @@ def order(id):
 				order_products = frappe.get_all(
 							"PIO",  # Replace with the correct child table doctype name
 							filters={'parent': id},
-							fields=['product', 'quantity']
+							fields=['name','status','order_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount']
 						)
 				products = []
 				for order_product in order_products:
@@ -642,6 +690,9 @@ def order(id):
 							'modified':format_date(order.modified),
 							'order_price':order.order_price,
 							'payment_status': order.payment_status,
+							'discount': order.discount,
+							'payable_amount': order.payable_amount,
+							'order_price': order.order_price,
 							'products': products
 						}
 				response.append(order_details)
