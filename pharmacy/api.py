@@ -588,7 +588,7 @@ def orders(phone=None):
 						'payment_status': order.payment_status,
 						'discount': order.discount,
 						'payable_amount': order.payable_amount,
-						'order_price': order.order_price,
+						'shipping_price': order.shipping_price,
 						'products': products
 					}
 					response.append(order_details)
@@ -632,7 +632,7 @@ def orders(phone=None):
 						'payment_status': order.payment_status,
 						'discount': order.discount,
 						'payable_amount': order.payable_amount,
-						'order_price': order.order_price,
+						'shipping_price': order.shipping_price,
 						'products': products
 					}
 					response.append(order_details)
@@ -692,7 +692,7 @@ def order(id=None):
 							'payment_status': order.payment_status,
 							'discount': order.discount,
 							'payable_amount': order.payable_amount,
-							'order_price': order.order_price,
+							'shipping_price': order.shipping_price,
 							'products': products
 						}
 				response.append(order_details)
