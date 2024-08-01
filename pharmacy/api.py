@@ -719,9 +719,10 @@ def lab_test(phone=None):
 			tests = frappe.get_all(
                 "Lab Test",
                 filters={'phone': phone},
-                fields=['name','status','test_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount', 'slot_time', 'slot_date', ]
+                fields=['name','status','test_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount', 'slot_time', 'slot_date', 'order_traced_location']
             )
 			if tests:
+				address = frappe.get_doc("Address", {'name': tests.order_traced_location}, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 				for test in tests:
 					test_products = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
@@ -754,6 +755,7 @@ def lab_test(phone=None):
 						'modified':format_date(test.modified),
 						'test_price':test.test_price,
 						'payment_status': test.payment_status,
+						'order_trace_location' : address,
 						'discount': test.discount,
 						'payable_amount': test.payable_amount,
 						'shipping_price': test.shipping_price,
