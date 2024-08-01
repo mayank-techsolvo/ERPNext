@@ -723,7 +723,10 @@ def lab_test(phone=None):
             )
 			if tests:
 				for test in tests:
-					address = frappe.get_doc("Address", {'name': test.order_traced_location}, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
+					if test.order_traced_location:
+						address = frappe.get_doc("Address", {'name': test.order_traced_location}, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
+					else:
+						address = ""
 					test_products = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
 						filters={'parent': test.name},
@@ -778,6 +781,10 @@ def lab_test(phone=None):
 					)
 					products = []
 					for test_product in test_products:
+						if test.order_traced_location:
+							address = frappe.get_doc("Address", {'name': test.order_traced_location}, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
+						else:
+							address = ""
 						product_details = frappe.get_all(
 							"Product",  # Replace with the correct product doctype name
 							filters={'name': test_product.product},
@@ -805,6 +812,7 @@ def lab_test(phone=None):
 						'discount': test.discount,
 						'payable_amount': test.payable_amount,
 						'shipping_price': test.shipping_price,
+						'order_trace_location' : address,
 						'slot_date': test.slot_date,
 						'slot_time': test.slot_time,
 						'products': products
