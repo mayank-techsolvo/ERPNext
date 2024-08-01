@@ -711,3 +711,69 @@ def order(id=None):
             "error": str(v)
         }
 
+@frappe.whitelist()
+def lab_test(phone=None):
+	response = []
+	try:
+		if phone:
+			tests = frappe.get_all(
+                "Lab Test",
+                filters={'phone': phone},
+                fields=['name','status','test_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount', 'slot_time', 'slot_date', ]
+            )
+			if tests:
+				for test in tests:
+					test_products = frappe.get_all(
+						"PIO",  # Replace with the correct child table doctype name
+						filters={'parent': test.name},
+						fields=['product', 'quantity' ]
+					)
+					products = []
+					for test_product in test_products:
+						product_details = frappe.get_all(
+							"Product",  # Replace with the correct product doctype name
+							filters={'name': test_product.product},
+							fields=[
+								'name',
+								'product_name',
+								'icon',
+								'expiry',
+								'description',
+								'price',
+								'usage',
+								'side_effects',
+								'alternative',
+								'category_name'
+							]
+						)
+						if product_details:
+								products.append(product_details[0])
+					test_details = {
+						'test_id': test.name,
+						'status':test.status,
+						'modified':format_date(test.modified),
+						'test_price':test.test_price,
+						'payment_status': test.payment_status,
+						'discount': test.discount,
+						'payable_amount': test.payable_amount,
+						'shipping_price': test.shipping_price,
+						'slot_date': test.slot_date,
+						'slot_time': test.slot_time,
+						'products': products
+					}
+					response.append(test_details)
+		return response
+	
+	except frappe.exceptions.AuthenticationError as e:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "Authentication Error!",
+            "error": str(e)
+        }
+	except frappe.exceptions.ValidationError as v:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "error": str(v)
+        }
