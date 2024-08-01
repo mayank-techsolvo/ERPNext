@@ -711,7 +711,7 @@ def order(id=None):
             "error": str(v)
         }
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=False)
 def lab_test(phone=None):
 	response = []
 	try:
