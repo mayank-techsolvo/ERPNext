@@ -161,6 +161,7 @@ def categories():
 						    'category_name': category['name']
 						},
 						limit=10,
+						order_by='price desc',
 						fields=[
 						    'name',
 							'product_name',
