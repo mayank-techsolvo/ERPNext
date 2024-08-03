@@ -662,7 +662,7 @@ def order(id=None):
 				order_products = frappe.get_all(
 							"PIO",  # Replace with the correct child table doctype name
 							filters={'parent': id},
-							fields=['name','status','order_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount']
+							fields=['product', 'quantity']
 						)
 				products = []
 				for order_product in order_products:
