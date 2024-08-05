@@ -1,20 +1,25 @@
 {
  "actions": [],
- "allow_rename": 1,
  "creation": "2024-06-05 18:59:36.927861",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "product",
   "quantity",
-  "user"
+  "user",
+  "column_break_neeg",
+  "category",
+  "slot_time",
+  "slot_date"
  ],
  "fields": [
   {
    "fieldname": "product",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Product",
-   "options": "Product"
+   "options": "Product",
+   "reqd": 1
   },
   {
    "fieldname": "quantity",
@@ -26,11 +31,34 @@
    "fieldtype": "Link",
    "label": "User",
    "options": "User"
+  },
+  {
+   "fieldname": "column_break_neeg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "product.category_name",
+   "fieldname": "category",
+   "fieldtype": "Read Only",
+   "hidden": 1,
+   "label": "Category"
+  },
+  {
+   "depends_on": "eval: doc.category === \"Lab Test\";",
+   "fieldname": "slot_time",
+   "fieldtype": "Data",
+   "label": "Slot Time"
+  },
+  {
+   "depends_on": "eval: doc.category === \"Lab Test\";",
+   "fieldname": "slot_date",
+   "fieldtype": "Date",
+   "label": "Slot Date"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-05 19:02:08.855337",
+ "modified": "2024-08-03 11:46:31.669216",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Cart",

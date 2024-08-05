@@ -6,7 +6,10 @@
  "engine": "InnoDB",
  "field_order": [
   "subcategory_name",
+  "icon",
+  "column_break_mccw",
   "category_name",
+  "section_break_zjsd",
   "description"
  ],
  "fields": [
@@ -26,11 +29,26 @@
    "fieldname": "description",
    "fieldtype": "Small Text",
    "label": "Description"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "icon",
+   "fieldtype": "Attach Image",
+   "in_preview": 1,
+   "label": "Icon"
+  },
+  {
+   "fieldname": "column_break_mccw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_zjsd",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-18 11:01:48.075517",
+ "modified": "2024-06-20 18:46:49.927710",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Product Sub Category",

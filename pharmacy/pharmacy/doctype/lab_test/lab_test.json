@@ -1,77 +1,33 @@
 {
  "actions": [],
  "autoname": "hash",
- "creation": "2024-06-05 19:03:23.051738",
+ "creation": "2024-07-30 19:22:16.621510",
+ "default_view": "List",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "phone",
   "discount",
   "payable_amount",
-  "order_price",
+  "test_price",
   "shipping_price",
+  "order_traced_location",
   "column_break_tdqi",
-  "status",
   "mode_of_payment",
   "payment_status",
-  "order_traced_location",
+  "status",
+  "slot_date",
+  "slot_time",
   "section_break_bwqt",
-  "products"
+  "lab_tests"
  ],
  "fields": [
-  {
-   "fieldname": "order_traced_location",
-   "fieldtype": "Link",
-   "label": "Order Traced Location",
-   "options": "Address"
-  },
-  {
-   "fieldname": "column_break_tdqi",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Ordered\nPackaged\nShipped\nDelivered\nCancelled"
-  },
-  {
-   "fieldname": "mode_of_payment",
-   "fieldtype": "Select",
-   "label": "Mode of Payment",
-   "options": "\nCash On Delivery\nUPI"
-  },
-  {
-   "fieldname": "payment_status",
-   "fieldtype": "Select",
-   "label": "Payment Status",
-   "options": "\nPaid\nUnpaid"
-  },
-  {
-   "fieldname": "order_price",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Order Price",
-   "non_negative": 1,
-   "reqd": 1
-  },
   {
    "fieldname": "phone",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Phone",
    "reqd": 1
-  },
-  {
-   "fieldname": "products",
-   "fieldtype": "Table",
-   "label": "Products",
-   "options": "PIO",
-   "reqd": 1
-  },
-  {
-   "fieldname": "section_break_bwqt",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "discount",
@@ -87,14 +43,71 @@
    "fieldname": "shipping_price",
    "fieldtype": "Float",
    "label": "Shipping Price"
+  },
+  {
+   "fieldname": "column_break_tdqi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Booked\nSample Collected\nResult Generated\nDelivered\nCancelled"
+  },
+  {
+   "fieldname": "mode_of_payment",
+   "fieldtype": "Select",
+   "label": "Mode of Payment",
+   "options": "\nCash On Delivery\nUPI"
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "\nPaid\nUnpaid"
+  },
+  {
+   "fieldname": "order_traced_location",
+   "fieldtype": "Link",
+   "label": "Order Traced Location",
+   "options": "Address"
+  },
+  {
+   "fieldname": "section_break_bwqt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "slot_date",
+   "fieldtype": "Date",
+   "label": "Slot Date"
+  },
+  {
+   "fieldname": "slot_time",
+   "fieldtype": "Data",
+   "label": "Slot Time"
+  },
+  {
+   "fieldname": "test_price",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Test Price",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "lab_tests",
+   "fieldtype": "Table",
+   "label": "Lab Tests",
+   "options": "PIO",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-29 12:33:37.994688",
+ "modified": "2024-07-30 19:36:01.768400",
  "modified_by": "Administrator",
  "module": "Pharmacy",
- "name": "Orders",
+ "name": "Lab Test",
  "naming_rule": "Random",
  "owner": "Administrator",
  "permissions": [
