@@ -964,7 +964,7 @@ def med_orders():
 	try:
 			orders = frappe.get_all(
                 "Orders",
-                ffields=['name','status','order_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount', 'phone', 'slot_time', 'slot_date']
+                fields=['name','status','order_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount', 'phone', 'slot_time', 'slot_date']
             )
 			if orders:
 				ordered_count = len([order for order in orders if order.status == "Ordered"])
