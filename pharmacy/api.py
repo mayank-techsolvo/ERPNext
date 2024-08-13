@@ -893,7 +893,7 @@ def lab_test_orders():
 							address = ""
 					order_products = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
-						filters={'parent': order.name, 'category': "38ec2qv129"},
+						filters={'parent': order.name, 'category': "Lab Test"},
 						fields=['product', 'quantity' ]
 					)
 					print("oreeder", order_products)
