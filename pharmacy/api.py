@@ -1042,3 +1042,319 @@ def med_orders():
             "success_key": 0,
             "error": str(v)
         }
+
+@frappe.whitelist()
+def order_data(phone=None):
+	response = []
+	try:
+		if phone:
+			orders = frappe.get_all(
+				"Order Data",
+				filters={'phone': phone},
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'status', 'order_price', 'test_discount', 'test_shipping_price', 'test_status', 'test_price','slot_date', 'slot_time']
+			)
+
+			if orders:
+				for order in orders:
+					# Fetch address details
+					if order.order_traced_location:
+						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
+					else:
+						address = ""
+
+					# Fetch test orders (products)
+					test_orders = frappe.get_all(
+						"PIO",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['product', 'quantity']
+					)
+					products = []
+					for test_order in test_orders:
+						product_details = frappe.get_all(
+							"Product",  # Replace with the correct product doctype name
+							filters={'name': test_order.product},
+							fields=[
+								'name',
+								'product_name',
+								'icon',
+								'expiry',
+								'description',
+								'price',
+								'usage',
+								'side_effects',
+								'alternative',
+								'category_name'
+							]
+						)
+						if product_details:
+								products.append(product_details[0])
+					test_orders = frappe.get_all(
+						"LIO",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['product', 'quantity']
+					)
+					lab_tests = []
+					for test_order in test_orders:
+						product_details = frappe.get_all(
+							"Product",  # Replace with the correct product doctype name
+							filters={'name': test_order.product},
+							fields=[
+								'name',
+								'product_name',
+								'icon',
+								'expiry',
+								'description',
+								'price',
+								'usage',
+								'side_effects',
+								'alternative',
+								'category_name'
+							]
+						)
+						if product_details:
+								lab_tests.append(product_details[0])
+					# Append order data to response
+					response.append({
+						'order_id': order.name,
+						'address': address,
+						'modified': order.modified,
+						'creation': order.creation,
+						'payable_amount': order.payable_amount,
+						'product_list': {
+				'pricing':{
+					'discount': order.discount,
+					'shipping_price': order.shipping_price,
+					'status':order.status,
+					'order_price':order.order_price,
+					},
+				'products':products
+				},
+				'test_list': {
+				'pricing':{
+					'test_discount': order.test_discount,
+					'test_shipping_price': order.test_shipping_price,
+					'test_status':order.test_status,
+					'test_price':order.test_price,
+					'slot_date': order.slot_date,
+					'slot_time': order.slot_time
+					},
+				'tests':lab_tests
+				}
+						})
+
+			return response
+		else:
+			return "Number Not found"
+	
+	except frappe.exceptions.AuthenticationError as e:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "Authentication Error!",
+            "error": str(e)
+        }
+	except frappe.exceptions.ValidationError as v:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "error": str(v)
+        }
+
+@frappe.whitelist()
+def med_order_data():
+	response = []
+	if "Pharmacy Manager" not in frappe.get_roles(frappe.session.user):
+		frappe.throw(_("You are not authorized to access this API."))
+	try:
+			orders = frappe.get_all(
+				"Order Data",
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount', 'discount', 'shipping_price', 'status', 'order_price', 'phone']
+			)
+
+			if orders:
+				# Calculate order counts
+				ordered_count = len([order for order in orders if order.status == "Ordered"])
+				cancelled = len([order for order in orders if order.status == "Cancelled"])
+				delivered = len([order for order in orders if order.status == "Delivered"])
+				packaged = len([order for order in orders if order.status == "Packaged"])
+				shipped = len([order for order in orders if order.status == "Shipped"])
+				total_orders = len(orders)
+
+				# Process each order
+				for order in orders:
+					# Fetch address details
+					if order.order_traced_location:
+						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
+					else:
+						address = ""
+
+					# Fetch test orders (products)
+					test_orders = frappe.get_all(
+						"PIO",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['product', 'quantity']
+					)
+					products = []
+					for test_order in test_orders:
+						product_details = frappe.get_all(
+							"Product",  # Replace with the correct product doctype name
+							filters={'name': test_order.product},
+							fields=[
+								'name',
+								'product_name',
+								'icon',
+								'expiry',
+								'description',
+								'price',
+								'usage',
+								'side_effects',
+								'alternative',
+								'category_name'
+							]
+						)
+						if product_details:
+								products.append(product_details[0])
+					# Append order data to response
+					response.append({
+						'category':'Medicines',
+						'order_id': order.name,
+						'user': get_user_info_by_phone(order.phone),
+						'address': address,
+						'total_order': total_orders,
+						'pending_order': ordered_count,
+						'cancelled_order': cancelled,
+						'delivered_order': delivered,
+						'packaged_order': packaged,
+						'shipped_order': shipped,
+						'modified': order.modified,
+						'creation': order.creation,
+						'payable_amount': order.payable_amount,
+						'product_list': {
+				'pricing':{
+					'discount': order.discount,
+					'shipping_price': order.shipping_price,
+					'status':order.status,
+					'order_price':order.order_price,
+					},
+				'products':products
+				}
+						})
+
+			return response
+
+	
+	except frappe.exceptions.AuthenticationError as e:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "Authentication Error!",
+            "error": str(e)
+        }
+	except frappe.exceptions.ValidationError as v:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "error": str(v)
+        }
+
+
+
+@frappe.whitelist()
+def lab_order_data():
+	response = []
+	if "Lab Manager" not in frappe.get_roles(frappe.session.user):
+		frappe.throw(_("You are not authorized to access this API."))
+	try:
+			orders = frappe.get_all(
+				"Order Data",
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','test_discount', 'test_shipping_price', 'test_status', 'test_price','slot_date', 'slot_time', 'phone']
+			)
+
+			if orders:
+				# Calculate order counts
+				ordered_count = len([order for order in orders if order.status == "Ordered"])
+				cancelled = len([order for order in orders if order.status == "Cancelled"])
+				delivered = len([order for order in orders if order.status == "Delivered"])
+				packaged = len([order for order in orders if order.status == "Packaged"])
+				shipped = len([order for order in orders if order.status == "Shipped"])
+				total_orders = len(orders)
+
+				# Process each order
+				for order in orders:
+					print("order",order)
+					# Fetch address details
+					if order.order_traced_location:
+						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
+					else:
+						address = ""
+
+					
+					test_orders = frappe.get_all(
+						"LIO",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['product', 'quantity']
+					)
+					lab_tests = []
+					for test_order in test_orders:
+						product_details = frappe.get_all(
+							"Product",  # Replace with the correct product doctype name
+							filters={'name': test_order.product},
+							fields=[
+								'name',
+								'product_name',
+								'icon',
+								'expiry',
+								'description',
+								'price',
+								'usage',
+								'side_effects',
+								'alternative',
+								'category_name'
+							]
+						)
+						if product_details:
+								lab_tests.append(product_details[0])
+					# Append order data to response
+					response.append({
+						'category':'Lab Test',
+						'order_id': order.name,
+						'user': get_user_info_by_phone(order.phone),
+						'address': address,
+						'total_order': total_orders,
+						'pending_order': ordered_count,
+						'cancelled_order': cancelled,
+						'delivered_order': delivered,
+						'packaged_order': packaged,
+						'shipped_order': shipped,
+						'modified': order.modified,
+						'creation': order.creation,
+						'payable_amount': order.payable_amount,
+						'test_list': {
+				'pricing':{
+					'test_discount': order.test_discount,
+					'test_shipping_price': order.test_shipping_price,
+					'test_status':order.test_status,
+					'test_price':order.test_price,
+					'slot_date': order.slot_date,
+					'slot_time': order.slot_time
+					},
+				'tests':lab_tests
+				}
+						})
+
+			return response
+
+	
+	except frappe.exceptions.AuthenticationError as e:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "Authentication Error!",
+            "error": str(e)
+        }
+	except frappe.exceptions.ValidationError as v:
+		frappe.clear_messages()
+		frappe.local.response["message"] = {
+            "success_key": 0,
+            "error": str(v)
+        }
