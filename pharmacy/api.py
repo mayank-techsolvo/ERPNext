@@ -1358,3 +1358,18 @@ def lab_order_data():
             "success_key": 0,
             "error": str(v)
         }
+
+@frappe.whitelist()
+def delete_user(user_email):
+	try:
+		frappe.delete_doc("User", user_email)
+		frappe.db.commit()
+		return "user deleted successfully"
+	except frappe.LinkExistsError as e:
+		print(f"Cannot delete user {user_email} because it is linked with other documents.")
+		# List linked documents (if needed)
+		linked_docs = frappe.get_all("User", filters={"email": user_email}, fields=["name", "doctype"])
+		for doc in linked_docs:
+			print(f"Linked document: {doc['doctype']} - {doc['name']}")
+	except Exception as e:
+		print(f"An error occurred: {str(e)}")
