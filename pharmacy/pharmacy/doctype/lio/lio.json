@@ -1,23 +1,25 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-07-04 17:31:24.465477",
+ "creation": "2024-08-14 18:23:52.163775",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "product",
-  "quantity",
   "price",
   "category",
-  "status"
+  "slot_date",
+  "slot_time",
+  "test_status"
  ],
  "fields": [
   {
-   "fieldname": "quantity",
-   "fieldtype": "Int",
+   "fieldname": "product",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Quantity"
+   "label": "Product",
+   "options": "Product"
   },
   {
    "fetch_from": "product_name.price",
@@ -27,32 +29,35 @@
    "label": "Price"
   },
   {
-   "fieldname": "product",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Product",
-   "options": "Product"
-  },
-  {
    "fetch_from": "product.category_name",
    "fieldname": "category",
    "fieldtype": "Data",
    "label": "Category"
   },
   {
-   "fieldname": "status",
+   "fieldname": "slot_date",
+   "fieldtype": "Data",
+   "label": "Slot Date"
+  },
+  {
+   "fieldname": "slot_time",
+   "fieldtype": "Data",
+   "label": "Slot Time"
+  },
+  {
+   "fieldname": "test_status",
    "fieldtype": "Select",
-   "label": "Status",
-   "options": "Ordered\nPackaged\nShipped\nDelivered\nCancelled"
+   "label": "Test Status",
+   "options": "Booked\nConfirmed\nSample Collected\nProcessing\nResults Ready"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-08-21 13:54:15.717471",
+ "modified": "2024-08-21 13:53:00.835735",
  "modified_by": "Administrator",
  "module": "Pharmacy",
- "name": "PIO",
+ "name": "LIO",
  "owner": "Administrator",
  "permissions": [],
  "sort_field": "modified",
