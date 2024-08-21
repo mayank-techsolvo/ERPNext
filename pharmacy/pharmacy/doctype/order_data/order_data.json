@@ -13,18 +13,16 @@
   "payment_status",
   "order_traced_location",
   "section_break_bwqt",
-  "status",
+  "med_status",
   "discount",
   "order_price",
   "shipping_price",
   "products",
   "lab_section",
-  "test_status",
-  "slot_date",
+  "lab_test_status",
   "test_discount",
   "test_price",
   "test_shipping_price",
-  "slot_time",
   "lab_tests"
  ],
  "fields": [
@@ -36,9 +34,26 @@
    "reqd": 1
   },
   {
+   "fieldname": "discount",
+   "fieldtype": "Float",
+   "label": "Discount"
+  },
+  {
    "fieldname": "payable_amount",
    "fieldtype": "Float",
    "label": "Payable Amount"
+  },
+  {
+   "fieldname": "order_price",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Order Price",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "shipping_price",
+   "fieldtype": "Float",
+   "label": "Shipping Price"
   },
   {
    "fieldname": "column_break_tdqi",
@@ -68,30 +83,7 @@
    "label": "Med"
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Ordered\nPackaged\nShipped\nDelivered\nCancelled"
-  },
-  {
-   "fieldname": "discount",
-   "fieldtype": "Float",
-   "label": "Discount"
-  },
-  {
-   "fieldname": "order_price",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Order Price",
-   "non_negative": 1
-  },
-  {
-   "fieldname": "shipping_price",
-   "fieldtype": "Float",
-   "label": "Shipping Price"
-  },
-  {
-   "fieldname": "products",
+  "fieldname": "products",
    "fieldtype": "Table",
    "label": "Products",
    "options": "PIO"
@@ -100,17 +92,6 @@
    "fieldname": "lab_section",
    "fieldtype": "Section Break",
    "label": "Lab"
-  },
-  {
-   "fieldname": "test_status",
-   "fieldtype": "Select",
-   "label": "Test Status",
-   "options": "Booked\nConfirmed\nSample Collected\nProcessing\nResults Ready"
-  },
-  {
-   "fieldname": "slot_date",
-   "fieldtype": "Data",
-   "label": "Slot Date"
   },
   {
    "fieldname": "test_discount",
@@ -132,20 +113,27 @@
    "non_negative": 1
   },
   {
-   "fieldname": "slot_time",
-   "fieldtype": "Data",
-   "label": "Slot Time"
-  },
-  {
    "fieldname": "lab_tests",
    "fieldtype": "Table",
    "label": "Lab Tests",
    "options": "LIO"
+  },
+  {
+   "fieldname": "med_status",
+   "fieldtype": "Select",
+   "label": "Med Status",
+   "options": "Ordered\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "lab_test_status",
+   "fieldtype": "Select",
+   "label": "Lab Test Status",
+   "options": "Booked\nProcessing\nCompleted\nCancelled"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-21 11:18:12.344136",
+ "modified": "2024-08-21 16:09:10.078965",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Order Data",
@@ -172,6 +160,7 @@
    "read": 1,
    "report": 1,
    "role": "Guest",
+   "select": 1,
    "share": 1,
    "write": 1
   }

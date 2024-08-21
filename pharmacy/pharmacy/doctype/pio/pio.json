@@ -9,8 +9,9 @@
   "product",
   "quantity",
   "price",
-  "category"
- ],
+  "category",
+  "status"
+],
  "fields": [
   {
    "fieldname": "quantity",
@@ -37,6 +38,12 @@
    "fieldname": "category",
    "fieldtype": "Data",
    "label": "Category"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Ordered\nPackaged\nShipped\nDelivered\nCancelled"
   }
  ],
  "index_web_pages_for_search": 1,

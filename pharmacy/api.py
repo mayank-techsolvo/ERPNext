@@ -1359,17 +1359,36 @@ def lab_order_data():
             "error": str(v)
         }
 
+# @frappe.whitelist()
+# def delete_user(user_email):
+# 	try:
+# 		frappe.delete_doc("User", user_email)
+# 		frappe.db.commit()
+# 		return "user deleted successfully"
+# 	except frappe.LinkExistsError as e:
+# 		print(f"Cannot delete user {user_email} because it is linked with other documents.")
+# 		# List linked documents (if needed)
+# 		linked_docs = frappe.get_all("User", filters={"email": user_email}, fields=["name", "doctype"])
+# 		for doc in linked_docs:
+# 			print(f"Linked document: {doc['doctype']} - {doc['name']}")
+# 	except Exception as e:
+# 		print(f"An error occurred: {str(e)}")
 @frappe.whitelist()
-def delete_user(user_email):
+def delete_user(phone):
 	try:
-		frappe.delete_doc("User", user_email)
-		frappe.db.commit()
-		return "user deleted successfully"
+		user = frappe.get_list("User", filters={"phone": phone}, fields=["name"])
+		print("user", user)
+		if user:
+			user_name = user[0].name
+			frappe.delete_doc("User", user_name)
+			frappe.db.commit()
+			return "User deleted successfully"
+		else:
+			return "User not found"
 	except frappe.LinkExistsError as e:
-		print(f"Cannot delete user {user_email} because it is linked with other documents.")
+		print(f"Cannot delete user with phone number {phone} because it is linked with other documents.")
 		# List linked documents (if needed)
-		linked_docs = frappe.get_all("User", filters={"email": user_email}, fields=["name", "doctype"])
-		for doc in linked_docs:
-			print(f"Linked document: {doc['doctype']} - {doc['name']}")
+		return "Cannot delete user because it is linked with other documents"
 	except Exception as e:
 		print(f"An error occurred: {str(e)}")
+		return "An error occurred while deleting the user"
