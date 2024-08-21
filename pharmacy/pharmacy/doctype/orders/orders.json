@@ -15,6 +15,8 @@
   "mode_of_payment",
   "payment_status",
   "order_traced_location",
+  "slot_date",
+  "slot_time",
   "section_break_bwqt",
   "products"
  ],
@@ -87,11 +89,21 @@
    "fieldname": "shipping_price",
    "fieldtype": "Float",
    "label": "Shipping Price"
+  },
+  {
+   "fieldname": "slot_date",
+   "fieldtype": "Data",
+   "label": "Slot Date"
+  },
+  {
+   "fieldname": "slot_time",
+   "fieldtype": "Data",
+   "label": "Slot Time"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-29 12:33:37.994688",
+ "modified": "2024-08-13 20:36:40.282739",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Orders",

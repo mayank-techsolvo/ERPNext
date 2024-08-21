@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "format:slot{#}",
+ "creation": "2024-08-07 19:47:52.162361",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "time"
+ ],
+ "fields": [
+  {
+   "fieldname": "time",
+   "fieldtype": "Data",
+   "label": "Time"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-07 19:51:16.741947",
+ "modified_by": "Administrator",
+ "module": "Pharmacy",
+ "name": "Slots",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "time",
+ "translated_doctype": 1
+}
