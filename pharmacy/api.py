@@ -701,14 +701,15 @@ def order(id=None):
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
-					if order.prescription:
-						prescription = frappe.get_all(
+					prescription = []
+					prescrip = frappe.get_all(
 						"Prescribe",  # Replace with the correct child table doctype name
 						filters={'parent': order.name},
-						fields=['prescription']
-					)
-					else:
-						prescription = []
+						fields=['prescription'])
+					for prescribe in prescrip:
+							pre = frappe.get_all('Prescription',filters={'name':prescribe.prescription}, fields=['prescription', 'name'])
+							if (pre):
+								prescription.append({"id":pre[0].name, "url":pre[0].prescription})
 
 					# Fetch test orders (products)
 					test_orders = frappe.get_all(
@@ -1207,14 +1208,15 @@ def order_data(phone=None):
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
-					if order.prescription:
-						prescription = frappe.get_all(
+					prescription = []
+					prescrip = frappe.get_all(
 						"Prescribe",  # Replace with the correct child table doctype name
 						filters={'parent': order.name},
-						fields=['prescription']
-					)
-					else:
-						prescription = []
+						fields=['prescription'])
+					for prescribe in prescrip:
+							pre = frappe.get_all('Prescription',filters={'name':prescribe.prescription}, fields=['prescription', 'name'])
+							if (pre):
+								prescription.append({"id":pre[0].name, "url":pre[0].prescription})
 					# Fetch test orders (products)
 					test_orders = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
@@ -1452,15 +1454,15 @@ def med_order_data():
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
-					if order.prescription:
-						prescription = frappe.get_all(
+					prescription = []
+					prescrip = frappe.get_all(
 						"Prescribe",  # Replace with the correct child table doctype name
 						filters={'parent': order.name},
-						fields=['prescription']
-					)
-					else:
-						prescription = []
-					
+						fields=['prescription'])
+					for prescribe in prescrip:
+							pre = frappe.get_all('Prescription',filters={'name':prescribe.prescription}, fields=['prescription', 'name'])
+							if (pre):
+								prescription.append({"id":pre[0].name, "url":pre[0].prescription})
 					test_orders = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
 						filters={'parent': order.name},
@@ -1559,14 +1561,16 @@ def lab_order_data():
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
-					if order.prescription:
-						prescription = frappe.get_all(
+					prescription = []
+					prescrip = frappe.get_all(
 						"Prescribe",  # Replace with the correct child table doctype name
 						filters={'parent': order.name},
-						fields=['prescription']
-					)
-					else:
-						prescription = []
+						fields=['prescription'])
+					for prescribe in prescrip:
+							pre = frappe.get_all('Prescription',filters={'name':prescribe.prescription}, fields=['prescription', 'name'])
+							if (pre):
+								prescription.append({"id":pre[0].name, "url":pre[0].prescription})
+						
 					
 					test_orders = frappe.get_all(
 						"LIO",  # Replace with the correct child table doctype name
@@ -1712,3 +1716,23 @@ def check_pin(pin):
 	else:
 		return False
 	
+@frappe.whitelist()
+def get_cart(phone):
+	print("hello")
+	response = []
+	carts = frappe.get_all(
+				"Cart", filters={"owner": frappe.session.user},
+				fields=['name', 'prescription', 'product','quantity']
+			)
+	for cart in carts:
+		print("cart",cart.prescription)
+		try:
+			prescription = frappe.get_all('Prescription',filters={'name':cart.prescription}, fields=['prescription'])
+		except:
+			prescription=""
+		if prescription:
+			cart['prescription'] = prescription[0].prescription
+		else:
+			cart['prescription'] = ""
+		response.append(cart)
+	return carts
