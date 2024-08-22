@@ -1703,3 +1703,12 @@ def test_status(id, test_status):
 			return {"message": f"please provide valid status!"}
 		else:
 			return {"message": f"please provide valid data!"}
+
+@frappe.whitelist()
+def check_pin(pin):
+	docs = frappe.get_all("Pincodes", {"pin_code":pin})
+	if docs:
+		return True
+	else:
+		return False
+	
