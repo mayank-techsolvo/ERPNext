@@ -1337,15 +1337,13 @@ def med_order_data():
 						'modified': order.modified,
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
-						'product_list': {
-				'pricing':{
+						'pricing':{
 					'discount': order.discount,
 					'shipping_price': order.shipping_price,
 					'status':order.status,
 					'order_price':order.order_price,
 					},
-				'tests':products
-				}
+				'products':products
 						})
 			response['orders'] = responseArray
 			return response
@@ -1428,7 +1426,7 @@ def lab_order_data():
 								product_details[0]['slot_time'] = test_order.slot_time
 								product_details[0]['slot_date'] = test_order.slot_date
 								product_details[0]['price'] = test_order.price
-								product_details[0]['test_status'] = test_order.test_status
+								product_details[0]['status'] = test_order.test_status
 								product_details[0]['quantity'] = test_order.quantity
 								lab_tests.append(product_details[0])
 					# Append order data to response
@@ -1440,15 +1438,13 @@ def lab_order_data():
 						'modified': order.modified,
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
-						'test_list': {
-				'pricing':{
-					'test_discount': order.test_discount,
-					'test_shipping_price': order.test_shipping_price,
-					'lab_test_status':"order.lab_test_status",
-					'test_price':order.test_price,
+						'pricing':{
+					'discount': order.test_discount,
+					'shipping_price': order.test_shipping_price,
+					'status':"order.lab_test_status",
+					'order_price':order.test_price,
 					},
-				'tests':lab_tests
-				}
+					'products':lab_tests
 						})
 			response['orders'] = responseArray
 			return response
