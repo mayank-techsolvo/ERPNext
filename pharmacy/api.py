@@ -701,6 +701,14 @@ def order(id=None):
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
+					if order.prescription:
+						prescription = frappe.get_all(
+						"Prescribe",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['prescription']
+					)
+					else:
+						prescription = []
 
 					# Fetch test orders (products)
 					test_orders = frappe.get_all(
@@ -770,6 +778,7 @@ def order(id=None):
 						'modified': order.modified,
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
+						'prescriptions': prescription,
 						'product_list': {
 				'pricing':{
 					'discount': order.discount,
@@ -1010,6 +1019,14 @@ def lab_test_orders():
 							address = frappe.get_doc("Address", {'name': order.order_traced_location}, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 							address = ""
+					if order.prescription:
+						prescription = frappe.get_all(
+						"Prescribe",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['prescription']
+					)
+					else:
+						prescription = []
 					order_products = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
 						filters={'parent': order.name, 'category': "Lab Test"},
@@ -1056,6 +1073,7 @@ def lab_test_orders():
 							'discount': order.discount,
 							'payable_amount': order.payable_amount,
 							'shipping_price': order.shipping_price,
+							'prescription': prescription,
 							'products': products
 						}
 						response.append(order_details)
@@ -1097,6 +1115,14 @@ def med_orders():
 							address = frappe.get_doc("Address", {'name': order.order_traced_location}, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 							address = ""
+					if order.prescription:
+						prescription = frappe.get_all(
+						"Prescribe",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['prescription']
+					)
+					else:
+						prescription = []
 					order_products = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
 						filters={'parent': order.name, 'category': ['!=', 'Lab Test']},
@@ -1143,6 +1169,7 @@ def med_orders():
 							'discount': order.discount,
 							'payable_amount': order.payable_amount,
 							'shipping_price': order.shipping_price,
+							'prescription':prescription,
 							'products': products
 						}
 						response.append(order_details)
@@ -1180,7 +1207,14 @@ def order_data(phone=None):
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
-
+					if order.prescription:
+						prescription = frappe.get_all(
+						"Prescribe",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['prescription']
+					)
+					else:
+						prescription = []
 					# Fetch test orders (products)
 					test_orders = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
@@ -1249,6 +1283,7 @@ def order_data(phone=None):
 						'modified': order.modified,
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
+						'prescription': prescription,
 						'product_list': {
 				'pricing':{
 					'discount': order.discount,
@@ -1417,7 +1452,14 @@ def med_order_data():
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
-
+					if order.prescription:
+						prescription = frappe.get_all(
+						"Prescribe",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['prescription']
+					)
+					else:
+						prescription = []
 					
 					test_orders = frappe.get_all(
 						"PIO",  # Replace with the correct child table doctype name
@@ -1456,6 +1498,7 @@ def med_order_data():
 						'modified': order.modified,
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
+						'prescription': prescription,
 						'pricing':{
 					'discount': order.discount,
 					'shipping_price': order.shipping_price,
@@ -1516,7 +1559,14 @@ def lab_order_data():
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
 						address = ""
-
+					if order.prescription:
+						prescription = frappe.get_all(
+						"Prescribe",  # Replace with the correct child table doctype name
+						filters={'parent': order.name},
+						fields=['prescription']
+					)
+					else:
+						prescription = []
 					
 					test_orders = frappe.get_all(
 						"LIO",  # Replace with the correct child table doctype name
@@ -1557,6 +1607,7 @@ def lab_order_data():
 						'modified': order.modified,
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
+						'prescription': prescription,
 						'pricing':{
 					'discount': order.test_discount,
 					'shipping_price': order.test_shipping_price,

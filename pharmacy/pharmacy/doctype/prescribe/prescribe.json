@@ -1,0 +1,32 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-22 16:20:31.094441",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "prescription"
+ ],
+ "fields": [
+  {
+   "fieldname": "prescription",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Prescription",
+   "options": "Prescription",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-22 16:50:43.920491",
+ "modified_by": "Administrator",
+ "module": "Pharmacy",
+ "name": "Prescribe",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

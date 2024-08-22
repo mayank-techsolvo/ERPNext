@@ -1,8 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-08-15 00:49:15.875719",
- "default_view": "List",
+ "creation": "2024-08-14 18:18:41.029813",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -12,6 +11,8 @@
   "mode_of_payment",
   "payment_status",
   "order_traced_location",
+  "section_break_otwu",
+  "prescription",
   "section_break_bwqt",
   "med_status",
   "discount",
@@ -83,7 +84,7 @@
    "label": "Med"
   },
   {
-  "fieldname": "products",
+   "fieldname": "products",
    "fieldtype": "Table",
    "label": "Products",
    "options": "PIO"
@@ -129,11 +130,21 @@
    "fieldtype": "Select",
    "label": "Lab Test Status",
    "options": "Booked\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "section_break_otwu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "prescription",
+   "fieldtype": "Table",
+   "label": "Prescription",
+   "options": "Prescribe"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-21 16:09:10.078965",
+ "modified": "2024-08-22 16:53:32.800805",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Order Data",

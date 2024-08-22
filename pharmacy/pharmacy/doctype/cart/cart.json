@@ -7,6 +7,7 @@
   "product",
   "quantity",
   "user",
+  "prescription",
   "column_break_neeg",
   "category",
   "slot_time",
@@ -54,11 +55,16 @@
    "fieldname": "slot_date",
    "fieldtype": "Date",
    "label": "Slot Date"
+  },
+  {
+   "fieldname": "prescription",
+   "fieldtype": "Data",
+   "label": "Prescription"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-03 11:46:31.669216",
+ "modified": "2024-08-22 16:49:47.239920",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Cart",
