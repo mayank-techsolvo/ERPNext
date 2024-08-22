@@ -1504,8 +1504,8 @@ def lab_order_data():
 
 @frappe.whitelist()
 def status(id, status):
-	if "Pharmacy Manager" not in frappe.get_roles(frappe.session.user):
-		frappe.throw(_("You are not authorized to access this API."))
+	# if "Pharmacy Manager" not in frappe.get_roles(frappe.session.user):
+	# 	frappe.throw(_("You are not authorized to access this API."))
 	if id and status:
 		doc = frappe.get_doc("PIO", id)
 		doc.test_status = status
@@ -1522,8 +1522,8 @@ def status(id, status):
 
 @frappe.whitelist()
 def test_status(id, test_status):
-	if "Lab Manager" not in frappe.get_roles(frappe.session.user):
-		frappe.throw(_("You are not authorized to access this API."))
+	# if "Lab Manager" not in frappe.get_roles(frappe.session.user):
+	# 	frappe.throw(_("You are not authorized to access this API."))
 	if id and test_status:
 		doc = frappe.get_doc("LIO", id)
 		doc.test_status = test_status
