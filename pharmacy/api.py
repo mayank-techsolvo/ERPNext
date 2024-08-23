@@ -1198,7 +1198,7 @@ def order_data(phone=None):
 			orders = frappe.get_all(
 				"Order Data",
 				filters={'phone': phone},
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price']
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price','lab_test_status', 'med_status']
 			)
 
 			if orders:
@@ -1430,7 +1430,7 @@ def med_order_data():
 	try:
 			orders = frappe.get_all(
 				"Order Data",
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'med_status', 'order_price', 'phone']
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'med_status', 'order_price', 'phone', 'med_status']
 			)
 
 			if orders:
@@ -1537,7 +1537,7 @@ def lab_order_data():
 	try:
 			orders = frappe.get_all(
 				"Order Data",
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','test_discount', 'test_shipping_price', 'test_status', 'test_price', 'phone']
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','test_discount', 'test_shipping_price', 'test_status', 'test_price', 'phone', 'lab_test_status']
 			)
 
 			if orders:
@@ -1602,7 +1602,6 @@ def lab_order_data():
 								product_details[0]['status'] = test_order.test_status
 								product_details[0]['quantity'] = test_order.quantity
 								lab_tests.append(product_details[0])
-					# Append order data to response
 					responseArray.append({
 						'category':'Lab Test',
 						'order_id': order.name,
