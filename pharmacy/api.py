@@ -784,7 +784,7 @@ def order(id=None):
 				'pricing':{
 					'discount': order.discount,
 					'shipping_price': order.shipping_price,
-					'status':"order.med_status",
+					'status':order.med_status,
 					'order_price':order.order_price,
 					},
 				'products':products
@@ -793,7 +793,7 @@ def order(id=None):
 				'pricing':{
 					'test_discount': order.test_discount,
 					'test_shipping_price': order.test_shipping_price,
-					'test_status':"order.lab_test_status",
+					'test_status':order.lab_test_status,
 					'test_price':order.test_price,
 					},
 				'tests':lab_tests
@@ -1290,7 +1290,7 @@ def order_data(phone=None):
 				'pricing':{
 					'discount': order.discount,
 					'shipping_price': order.shipping_price,
-					'status':"order.med_status",
+					'status':order.med_status,
 					'order_price':order.order_price,
 					},
 				'products':products
@@ -1299,7 +1299,7 @@ def order_data(phone=None):
 				'pricing':{
 					'test_discount': order.test_discount,
 					'test_shipping_price': order.test_shipping_price,
-					'test_status':"order.lab_test_status",
+					'test_status':order.lab_test_status,
 					'test_price':order.test_price,
 					},
 				'tests':lab_tests
@@ -1504,7 +1504,7 @@ def med_order_data():
 						'pricing':{
 					'discount': order.discount,
 					'shipping_price': order.shipping_price,
-					'status':order.status,
+					'status':order.med_status,
 					'order_price':order.order_price,
 					},
 				'products':products
@@ -1615,7 +1615,7 @@ def lab_order_data():
 						'pricing':{
 					'discount': order.test_discount,
 					'shipping_price': order.test_shipping_price,
-					'status':"order.lab_test_status",
+					'status':order.lab_test_status,
 					'order_price':order.test_price,
 					},
 					'products':lab_tests
