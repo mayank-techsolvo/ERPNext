@@ -1677,7 +1677,7 @@ def status(id, status):
 	# 	frappe.throw(_("You are not authorized to access this API."))
 	if id and status:
 		doc = frappe.get_doc("PIO", id)
-		doc.test_status = status
+		doc.status = status
 		doc.save()
 		frappe.db.commit()
 		return {"status": "success", "message": f"Document with ID {id} has been updated"}
@@ -1735,3 +1735,16 @@ def get_cart(phone):
 			cart['prescription'] = ""
 		response.append(cart)
 	return carts
+
+@frappe.whitelist()
+def get_prescription():
+	response = []
+	prescriptions = frappe.get_all()
+	print(prescriptions)
+	response.append(prescriptions)
+
+@frappe.whitelist()
+def post_prescription(prescription, orderid, tempid):
+	print(prescription)
+	return True
+	

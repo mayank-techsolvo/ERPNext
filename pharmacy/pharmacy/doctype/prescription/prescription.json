@@ -6,7 +6,10 @@
  "engine": "InnoDB",
  "field_order": [
   "phone",
-  "prescription"
+  "prescription",
+  "column_break_birm",
+  "orderid",
+  "temproryid"
  ],
  "fields": [
   {
@@ -18,11 +21,29 @@
    "fieldname": "prescription",
    "fieldtype": "Attach Image",
    "label": "Prescription"
+  },
+  {
+   "fieldname": "column_break_birm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "orderid",
+   "fieldtype": "Link",
+   "label": "OrderID",
+   "non_negative": 1,
+   "options": "Order Data"
+  },
+  {
+   "fieldname": "temproryid",
+   "fieldtype": "Int",
+   "label": "TempID",
+   "non_negative": 1,
+   "unique": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-04 17:19:35.526693",
+ "modified": "2024-08-26 13:15:21.464513",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Prescription",

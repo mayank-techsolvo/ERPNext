@@ -58,13 +58,14 @@
   },
   {
    "fieldname": "prescription",
-   "fieldtype": "Data",
-   "label": "Prescription"
+   "fieldtype": "Table MultiSelect",
+   "label": "Prescription",
+   "options": "Prescribe"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-22 16:49:47.239920",
+ "modified": "2024-08-26 13:28:55.311369",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Cart",

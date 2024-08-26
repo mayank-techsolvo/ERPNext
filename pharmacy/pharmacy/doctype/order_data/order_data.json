@@ -13,6 +13,7 @@
   "order_traced_location",
   "section_break_otwu",
   "prescription",
+  "reports",
   "section_break_bwqt",
   "med_status",
   "discount",
@@ -140,11 +141,17 @@
    "fieldtype": "Table",
    "label": "Prescription",
    "options": "Prescribe"
+  },
+  {
+   "fieldname": "reports",
+   "fieldtype": "Table",
+   "label": "Reports",
+   "options": "User Report"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-22 16:53:32.800805",
+ "modified": "2024-08-23 13:48:26.254512",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Order Data",
