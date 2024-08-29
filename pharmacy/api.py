@@ -91,6 +91,10 @@ def login_user(user_data):
 					"error":e
 				}
 				return
+
+		hours, minutes, seconds = map(int, frappe.session.data.session_expiry.split(':'))
+		milliseconds = (hours * 60 * 60 * 1000) + (minutes * 60 * 1000) + (seconds * 1000)
+
 		api_generate = generate_keys(frappe.session.user)
 		user=frappe.get_doc("User", frappe.session.user)
 		frappe.response['data'] = {
@@ -98,7 +102,7 @@ def login_user(user_data):
 			"data":{
 				"user":user,
 				"token":frappe.session.sid,
-				"expire_in": frappe.session.session_expiry,
+				"expire_in": milliseconds,
 				"type":"Bearer"
 			}
 			}
