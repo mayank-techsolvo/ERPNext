@@ -1717,35 +1717,61 @@ def check_pin(pin):
 	
 @frappe.whitelist()
 def get_cart(phone):
-	response = []
-	carts = frappe.get_all(
-		"Cart", 
-		filters={"owner": frappe.session.user},
-		fields=['name', 'product', 'quantity', 'user', 'prescription']
-	)
-	
-	# Fetch all prescriptions related to the current user
-	all_prescriptions = frappe.get_all(
-		"Prescribe",
-		filters={"owner": frappe.session.user},
-		fields=['name', 'prescription', 'parent']
-	)
-	# Create a dictionary to map parent ID to a list of prescription details
-	prescriptions_by_cart = {}
-	for pres in all_prescriptions:
-		parent_id = pres['parent']
-		if parent_id not in prescriptions_by_cart:
-			prescriptions_by_cart[parent_id] = []
-		prescriptions_by_cart[parent_id].append(pres['prescription'])
+    response = []
+    
+    # Fetch all cart records for the current user
+    carts = frappe.get_all(
+        "Cart", 
+        filters={"owner": frappe.session.user},
+        fields=['name', 'product', 'quantity', 'user', 'prescription']
+    )
+    print("Carts:", carts, '\n')
+    
+    # Fetch all prescribe records related to the current user
+    all_prescribe = frappe.get_all(
+        "Prescribe",
+        fields=['name', 'prescription', 'parent']
+    )
+    print("All Prescribe:", all_prescribe, '\n')
 
-	for cart in carts:
-		# Get prescriptions associated with the current cart
-		prescription_data = prescriptions_by_cart.get(cart['name'], [])
-		
-		# Update the cart with the list of prescription values
-		cart['prescription'] = prescription_data
-		response.append(cart)
-	return response
+    # Fetch all prescription records
+    all_prescriptions = frappe.get_all(
+        "Prescription",
+        fields=['name', 'prescription', 'orderid', 'temproryid', 'phone']
+    )
+    print("All Prescriptions:", all_prescriptions, '\n')
+
+    # Create a dictionary to map prescription names to prescription details
+    prescription_details = {pres['name']: pres for pres in all_prescriptions}
+    print("Prescription Details Dictionary:", prescription_details, '\n')
+    
+    # Create a dictionary to map parent ID (cart name) to a list of prescription details
+    prescriptions_by_cart = {}
+    for pres in all_prescribe:
+        parent_id = pres['parent']
+        print("Parent ID:", parent_id, '\n')
+        
+        if parent_id not in prescriptions_by_cart:
+            prescriptions_by_cart[parent_id] = []
+        
+        # Fetch the detailed prescription data using the prescription name from the Prescribe DocType
+        prescription_name = pres['prescription']
+        prescription_detail = prescription_details.get(prescription_name, {})
+        
+        prescriptions_by_cart[parent_id].append(prescription_detail)
+
+    print("Prescriptions by Cart Dictionary:", prescriptions_by_cart, '\n')
+    
+    for cart in carts:
+        # Get prescription details associated with the current cart
+        prescription_data = prescriptions_by_cart.get(cart['name'], [])
+        
+        # Update the cart with the list of prescription details
+        cart['prescription'] = prescription_data
+        response.append(cart)
+    
+    print("Final Response:", response, '\n')
+    return response
 
 
 @frappe.whitelist()
