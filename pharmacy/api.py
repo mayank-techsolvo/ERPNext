@@ -1727,27 +1727,32 @@ def get_cart(phone):
     carts = frappe.get_all(
         "Cart", 
         filters={"owner": frappe.session.user},
-        fields=['name', 'product', 'quantity', 'user', 'prescription']
+        fields=['name', 'product', 'quantity', 'user', 'prescription','category','slot_time','slot_date']
     )
-    print("Carts:", carts, '\n')
     
     # Fetch all prescribe records related to the current user
     all_prescribe = frappe.get_all(
         "Prescribe",
         fields=['name', 'prescription', 'parent']
     )
-    print("All Prescribe:", all_prescribe, '\n')
 
+    product_category = frappe.get_all(
+		"Product Category",
+		fields = ['name', 'category_name']
+	)
+
+    
+    product_category_dict = {pres['name']: pres for pres in product_category}
+    
+    print("Product Details Dictionary:", product_category_dict, '\n')
     # Fetch all prescription records
     all_prescriptions = frappe.get_all(
         "Prescription",
         fields=['name', 'prescription']
     )
-    print("All Prescriptions:", all_prescriptions, '\n')
 
     # Create a dictionary to map prescription names to prescription details
     prescription_details = {pres['name']: pres for pres in all_prescriptions}
-    print("Prescription Details Dictionary:", prescription_details, '\n')
     
     # Create a dictionary to map parent ID (cart name) to a list of prescription details
     prescriptions_by_cart = {}
@@ -1763,8 +1768,6 @@ def get_cart(phone):
         prescription_detail = prescription_details.get(prescription_name, {})
         
         prescriptions_by_cart[parent_id].append(prescription_detail)
-
-    print("Prescriptions by Cart Dictionary:", prescriptions_by_cart, '\n')
     
     for cart in carts:
         # Get prescription details associated with the current cart
@@ -1772,9 +1775,12 @@ def get_cart(phone):
         
         # Update the cart with the list of prescription details
         cart['prescription'] = prescription_data
+
+        catergory_data = product_category_dict.get(cart['category'], [])
+        cart['category'] = catergory_data.category_name
+
         response.append(cart)
     
-    print("Final Response:", response, '\n')
     return response
 
 
