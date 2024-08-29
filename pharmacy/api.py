@@ -1516,16 +1516,16 @@ def med_order_data():
 	except frappe.exceptions.AuthenticationError as e:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
-            "success_key": 0,
-            "message": "Authentication Error!",
-            "error": str(e)
-        }
+			"success_key": 0,
+			"message": "Authentication Error!",
+			"error": str(e)
+		}
 	except frappe.exceptions.ValidationError as v:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
-            "success_key": 0,
-            "error": str(v)
-        }
+			"success_key": 0,
+			"error": str(v)
+		}
 
 
 @frappe.whitelist()
@@ -1626,16 +1626,16 @@ def lab_order_data():
 	except frappe.exceptions.AuthenticationError as e:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
-            "success_key": 0,
-            "message": "Authentication Error!",
-            "error": str(e)
-        }
+			"success_key": 0,
+			"message": "Authentication Error!",
+			"error": str(e)
+		}
 	except frappe.exceptions.ValidationError as v:
 		frappe.clear_messages()
 		frappe.local.response["message"] = {
-            "success_key": 0,
-            "error": str(v)
-        }
+			"success_key": 0,
+			"error": str(v)
+		}
 
 # @frappe.whitelist()
 # def delete_user(user_email):
@@ -1717,24 +1717,36 @@ def check_pin(pin):
 	
 @frappe.whitelist()
 def get_cart(phone):
-	print("hello")
 	response = []
 	carts = frappe.get_all(
-				"Cart", filters={"owner": frappe.session.user},
-				fields=['name', 'prescription', 'product','quantity']
-			)
+		"Cart", 
+		filters={"owner": frappe.session.user},
+		fields=['name', 'product', 'quantity', 'user', 'prescription']
+	)
+	
+	# Fetch all prescriptions related to the current user
+	all_prescriptions = frappe.get_all(
+		"Prescribe",
+		filters={"owner": frappe.session.user},
+		fields=['name', 'prescription', 'parent']
+	)
+	# Create a dictionary to map parent ID to a list of prescription details
+	prescriptions_by_cart = {}
+	for pres in all_prescriptions:
+		parent_id = pres['parent']
+		if parent_id not in prescriptions_by_cart:
+			prescriptions_by_cart[parent_id] = []
+		prescriptions_by_cart[parent_id].append(pres['prescription'])
+
 	for cart in carts:
-		print("cart",cart.prescription)
-		try:
-			prescription = frappe.get_all('Prescription',filters={'name':cart.prescription}, fields=['prescription'])
-		except:
-			prescription=""
-		if prescription:
-			cart['prescription'] = prescription[0].prescription
-		else:
-			cart['prescription'] = ""
+		# Get prescriptions associated with the current cart
+		prescription_data = prescriptions_by_cart.get(cart['name'], [])
+		
+		# Update the cart with the list of prescription values
+		cart['prescription'] = prescription_data
 		response.append(cart)
-	return carts
+	return response
+
 
 @frappe.whitelist()
 def get_prescription():
