@@ -1737,7 +1737,7 @@ def get_cart(phone):
     # Fetch all prescription records
     all_prescriptions = frappe.get_all(
         "Prescription",
-        fields=['name', 'prescription', 'orderid', 'temproryid', 'phone']
+        fields=['name', 'prescription']
     )
     print("All Prescriptions:", all_prescriptions, '\n')
 
