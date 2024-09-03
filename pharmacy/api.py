@@ -1,6 +1,9 @@
 import frappe
 from frappe.utils.data import now_datetime
 from frappe import _
+import string
+
+
 def sign_up( phone, role, email) -> tuple[int, str]:
 	# full_name = first_name + " " + last_name
 		user = frappe.get_doc(
@@ -56,6 +59,10 @@ def user_signup(email, first_name, last_name, age, mobile_no, role):
     # user_data = sign_up(email, first_name, last_name,age,mobile_no, role)
     # return json.dumps({"message": f"{user_data} registered successfully"})
 
+def random_char(char_num):
+	return ''.join(random.choice(string.ascii_letters) for _ in range(char_num))
+
+
 from frappe import auth
 import random
 @frappe.whitelist(allow_guest=True)
@@ -63,7 +70,8 @@ def login(phone, role):
 	# frappe.local.login_manager.logout()
 	# frappe.db.commit()
 	# print(phone)
-	email=f"test{random.randint(1, 100)}@mail.com"
+	
+	email=f"smile_{phone}@mail.com"
 	user_data=None
 	try:
 		user_data=frappe.get_doc("User", {"phone":phone})
@@ -906,7 +914,7 @@ def order(id=None):
 # 							"Product",  # Replace with the correct product doctype name
 # 							filters={'name': test_product.product},
 # 							fields=[
-# 								'name',
+#  								'name',
 # 								'product_name',
 # 								'icon',
 # 								'expiry',
@@ -965,7 +973,7 @@ def order(id=None):
 # 								'price',
 # 								'usage',
 # 								'side_effects',
-# 								'alternative',
+#  								'alternative',
 # 								'category_name'
 # 							]
 # 						)
@@ -1530,6 +1538,41 @@ def med_order_data():
 			"success_key": 0,
 			"error": str(v)
 		}
+
+
+import frappe
+
+@frappe.whitelist()
+def get_test_report(order_id):
+    try:
+        # Retrieve the document
+        orderData = frappe.get_doc('Order Data', order_id)
+        
+        # Convert document to dictionary
+        orderDataDict = orderData.as_dict()
+        
+        # Check if 'reports' key exists and is not None
+        reports = orderDataDict.get("reports", None)
+        
+        # Handle case where 'reports' might be None
+        if reports is None:
+            return {"error": "No reports data available for this order."}
+        
+        # Return the reports data
+        return {"reportData": reports}
+    
+    except frappe.DoesNotExistError:
+        # Handle case where document with given order_id does not exist
+        return {"error": f"Order Data with ID '{order_id}' does not exist."}
+    
+    except frappe.PermissionError:
+        # Handle case where user does not have permission to access the document
+        return {"error": "You do not have permission to access this document."}
+    
+    except Exception as e:
+        # Handle other unexpected exceptions
+        return {"error": f"An unexpected error occurred: {str(e)}"}
+
 
 
 @frappe.whitelist()

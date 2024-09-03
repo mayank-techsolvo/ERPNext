@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "SMILE-MD-.#####",
  "creation": "2024-08-14 18:18:41.029813",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -151,10 +152,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-23 13:48:26.254512",
+ "modified": "2024-09-03 16:38:29.077567",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Order Data",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
