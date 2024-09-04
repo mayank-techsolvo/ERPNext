@@ -1540,11 +1540,38 @@ def med_order_data():
 		}
 
 
-import frappe
 
 @frappe.whitelist()
-def get_test_report(order_id):
+def get_test_report(order_id=None):
     try:
+        if not order_id:
+            # Fetch the current user
+            user = frappe.session.user
+
+            meta = frappe.get_meta('Order Data')  # Replace with your actual DocType
+            column_names = [field.fieldname for field in meta.fields if field.fieldtype != 'Table']
+
+            print("column_names",column_names)
+            # Fetch all orders for this user
+            orders = frappe.get_all('Order Data', 
+									filters={'owner': user}, # Adjust filter based on your data model
+                                    fields=['name','owner'])
+            print("order",orders)
+
+            # Initialize an empty list to hold all reports
+            all_reports = []
+
+            # Iterate through each order to gather reports
+            for order in orders:
+                order_data = frappe.get_doc('Order Data', order['name'])
+                reports = order_data.get('reports', [])
+                
+                # Append each report to the all_reports list
+                all_reports.extend(reports)
+            
+            # Return the aggregated reports data
+            return {"reportData": all_reports}
+
         # Retrieve the document
         orderData = frappe.get_doc('Order Data', order_id)
         
