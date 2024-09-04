@@ -1737,23 +1737,24 @@ def lab_order_data():
 								product_details[0]['status'] = test_order.test_status
 								product_details[0]['quantity'] = test_order.quantity
 								lab_tests.append(product_details[0])
-					responseArray.append({
-						'category':'Lab Test',
-						'order_id': order.name,
-						'user': get_user_info_by_phone(order.phone),
-						'address': address,
-						'modified': order.modified,
-						'creation': order.creation,
-						'payable_amount': order.payable_amount,
-						'prescription': prescription,
-						'pricing':{
-					'discount': order.test_discount,
-					'shipping_price': order.test_shipping_price,
-					'status':order.lab_test_status,
-					'order_price':order.test_price,
-					},
-					'products':lab_tests
-						})
+					if lab_tests:
+						responseArray.append({
+							'category':'Lab Test',
+							'order_id': order.name,
+							'user': get_user_info_by_phone(order.phone),
+							'address': address,
+							'modified': order.modified,
+							'creation': order.creation,
+							'payable_amount': order.payable_amount,
+							'prescription': prescription,
+							'pricing':{
+						'discount': order.test_discount,
+						'shipping_price': order.test_shipping_price,
+						'status':order.lab_test_status,
+						'order_price':order.test_price,
+						},
+						'products':lab_tests
+							})
 			response['orders'] = responseArray
 			return response
 
