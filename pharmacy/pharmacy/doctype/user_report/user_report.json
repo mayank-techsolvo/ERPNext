@@ -2,7 +2,7 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "SMILE-REPORT-.#####",
- "creation": "2024-08-23 13:43:23.880250",
+ "creation": "2024-09-04 13:18:01.617927",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -22,6 +22,7 @@
   {
    "fieldname": "report_file",
    "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Report",
    "reqd": 1
   }
@@ -29,14 +30,14 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-09-03 17:02:15.575707",
+ "modified": "2024-09-04 13:21:50.695841",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "User Report",
  "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [],
- "sort_field": "creation",
+ "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }
