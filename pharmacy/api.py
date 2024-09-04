@@ -2,7 +2,7 @@ import frappe
 from frappe.utils.data import now_datetime
 from frappe import _
 import string
-
+from werkzeug.utils import secure_filename
 
 def sign_up( phone, role, email) -> tuple[int, str]:
 	# full_name = first_name + " " + last_name
@@ -1575,6 +1575,67 @@ def get_test_report(order_id):
 
 
 
+
+@frappe.whitelist(allow_guest=False)   # Set to False if not allowing guest access
+def upload_test_report():
+    try:
+        # Retrieve the file and order_id from the request
+        file = frappe.request.files.get('file')
+        order_id = frappe.form_dict.get('order_id')
+
+        if not file or not order_id:
+            return {"error": "File and order_id are required."}
+
+        # Secure the filename and save it
+        filename = secure_filename(file.filename)
+        file_data = file.read()
+
+        # Create and save the file document
+        file_doc = frappe.get_doc({
+            'doctype': 'File',
+            'file_name': filename,
+            'attached_to_doctype': 'Order Data',  # Adjust to your needs
+            'attached_to_name': order_id,  # Document ID
+            'file_url': f'/files/{filename}',  # Set the path where you want to store the file
+            'is_private': 0,  # Adjust if needed
+            'content': file_data
+        })
+
+        # Insert the file document into the database
+        file_doc.insert()
+
+        # Retrieve the order document as a Frappe document object
+        order_doc = frappe.get_doc('Order Data', order_id)  # Replace 'Order Doctype' with your actual doctype
+        if not order_doc:
+            return {"error": f"Order Data with ID '{order_id}' does not exist."}
+
+        # Ensure the 'reports' field is a list
+        if not hasattr(order_doc, 'reports'):
+            order_doc.reports = []  # Initialize the list if it does not exist
+        
+        # Append new report info with file ID
+        report_row = {
+            'report_name': file_doc.name,  # Store the file ID
+            'report_file': file_doc.file_url
+        }
+
+        # Add the new row to the 'reports' table
+        order_doc.append('reports', report_row)
+
+        # Save the updated order document
+        order_doc.save()
+
+        return {"message": "File uploaded and report information updated successfully.", "file_id": file_doc.name}
+
+    except frappe.DoesNotExistError:
+        # Handle case where document with given order_id does not exist
+        return {"error": f"Order Data with ID '{order_id}' does not exist."}
+    
+    except frappe.PermissionError:
+        # Handle case where user does not have permission to access the document
+        return {"error": "You do not have permission to access this document."}
+    
+	
 @frappe.whitelist()
 def lab_order_data():
 	response = {}
