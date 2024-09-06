@@ -705,7 +705,7 @@ def order(id=None):
 	try:
 		if id:
 			order = frappe.get_doc(
-				"Order Data",{'name': id},['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price']
+				"Order Data",{'name': id},['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price', 'is_dr_callback', 'mode_of_payment']
 			)
 
 			if order:
@@ -792,6 +792,9 @@ def order(id=None):
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
 						'prescriptions': prescription,
+						'mode_of_payment': order.mode_of_payment,
+						'is_dr_callback': order.is_dr_callback,
+						'payment_status': order.payment_status,
 						'product_list': {
 				'pricing':{
 					'discount': order.discount,
@@ -1210,7 +1213,7 @@ def order_data(phone=None):
 			orders = frappe.get_all(
 				"Order Data",
 				filters={'phone': phone},
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price','lab_test_status', 'med_status', 'mode_of_payment']
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price','lab_test_status', 'med_status', 'is_dr_callback', 'mode_of_payment']
 			)
 
 			if orders:
@@ -1299,6 +1302,8 @@ def order_data(phone=None):
 						'payable_amount': order.payable_amount,
 						'prescription': prescription,
 						'mode_of_payment': order.mode_of_payment,
+						'is_dr_callback': order.is_dr_callback,
+						'payment_status': order.payment_status,
 						'product_list': {
 				'pricing':{
 					'discount': order.discount,
@@ -1517,6 +1522,7 @@ def med_order_data():
 						'prescription': prescription,
 						'mode_of_payment': order.mode_of_payment,
 						'is_dr_callback': order.is_dr_callback,
+						'payment_status': order.payment_status,
 						'pricing':{
 					'discount': order.discount,
 					'shipping_price': order.shipping_price,
@@ -1753,6 +1759,7 @@ def lab_order_data():
 							'prescription': prescription,
 							'mode_of_payment':order.mode_of_payment,
 							'is_dr_callback':order.is_dr_callback,
+							'payment_status': order.payment_status,
 							'pricing':{
 						'discount': order.test_discount,
 						'shipping_price': order.test_shipping_price,
