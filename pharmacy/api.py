@@ -1210,7 +1210,7 @@ def order_data(phone=None):
 			orders = frappe.get_all(
 				"Order Data",
 				filters={'phone': phone},
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price','lab_test_status', 'med_status']
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price','lab_test_status', 'med_status', 'mode_of_payment']
 			)
 
 			if orders:
@@ -1298,6 +1298,7 @@ def order_data(phone=None):
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
 						'prescription': prescription,
+						'mode_of_payment': order.mode_of_payment,
 						'product_list': {
 				'pricing':{
 					'discount': order.discount,
@@ -1439,10 +1440,11 @@ def med_order_data():
 	responseArray=[]
 	if "Pharmacy Manager" not in frappe.get_roles(frappe.session.user):
 		frappe.throw(_("You are not authorized to access this API."))
-	try:
+	try:	
+			
 			orders = frappe.get_all(
 				"Order Data",
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'med_status', 'order_price', 'phone', 'med_status']
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'med_status', 'order_price', 'phone', 'mode_of_payment','is_dr_callback']
 			)
 
 			if orders:
@@ -1513,6 +1515,8 @@ def med_order_data():
 						'creation': order.creation,
 						'payable_amount': order.payable_amount,
 						'prescription': prescription,
+						'mode_of_payment': order.mode_of_payment,
+						'is_dr_callback': order.is_dr_callback,
 						'pricing':{
 					'discount': order.discount,
 					'shipping_price': order.shipping_price,
@@ -1672,7 +1676,7 @@ def lab_order_data():
 	try:
 			orders = frappe.get_all(
 				"Order Data",
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','test_discount', 'test_shipping_price', 'test_status', 'test_price', 'phone', 'lab_test_status']
+				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','test_discount', 'test_shipping_price', 'test_status', 'test_price', 'phone', 'lab_test_status', 'mode_of_payment','is_dr_callback']
 			)
 
 			if orders:
@@ -1747,6 +1751,8 @@ def lab_order_data():
 							'creation': order.creation,
 							'payable_amount': order.payable_amount,
 							'prescription': prescription,
+							'mode_of_payment':order.mode_of_payment,
+							'is_dr_callback':order.is_dr_callback,
 							'pricing':{
 						'discount': order.test_discount,
 						'shipping_price': order.test_shipping_price,

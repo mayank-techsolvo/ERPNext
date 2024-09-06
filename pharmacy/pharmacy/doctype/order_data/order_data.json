@@ -6,12 +6,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "section_break_itgf",
   "phone",
   "payable_amount",
   "column_break_tdqi",
   "mode_of_payment",
   "payment_status",
   "order_traced_location",
+  "is_dr_callback",
   "section_break_otwu",
   "prescription",
   "reports",
@@ -125,13 +127,13 @@
    "fieldname": "med_status",
    "fieldtype": "Select",
    "label": "Med Status",
-   "options": "Ordered\nProcessing\nCompleted\nCancelled"
+   "options": "Ordered\nValidated\nProcessing\nCompleted\nCancelled"
   },
   {
    "fieldname": "lab_test_status",
    "fieldtype": "Select",
    "label": "Lab Test Status",
-   "options": "Booked\nProcessing\nCompleted\nCancelled"
+   "options": "Booked\nValidated\nProcessing\nCompleted\nCancelled"
   },
   {
    "fieldname": "section_break_otwu",
@@ -148,11 +150,22 @@
    "fieldtype": "Table",
    "label": "Reports",
    "options": "User Report"
+  },
+  {
+   "default": "1",
+   "fieldname": "section_break_itgf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_dr_callback",
+   "fieldtype": "Check",
+   "label": "Dr Callback Request"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-04 13:23:49.633823",
+ "modified": "2024-09-06 13:32:48.954951",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Order Data",
