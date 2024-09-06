@@ -8,7 +8,8 @@
  "field_order": [
   "city",
   "pin_code",
-  "service_time"
+  "service_time",
+  "delivery_charge"
  ],
  "fields": [
   {
@@ -25,11 +26,16 @@
    "fieldname": "service_time",
    "fieldtype": "Data",
    "label": "Service Time"
+  },
+  {
+   "fieldname": "delivery_charge",
+   "fieldtype": "Data",
+   "label": "Delivery Charge"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-22 18:32:44.434577",
+ "modified": "2024-09-06 18:16:35.576286",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Pincodes",
