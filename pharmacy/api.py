@@ -1858,11 +1858,11 @@ def test_status(id, test_status):
 
 @frappe.whitelist()
 def check_pin(pin):
-	docs = frappe.get_all("Pincodes", {"pin_code":pin})
+	docs = frappe.get_all("Pincodes", filters={"pin_code": pin}, fields="*")
 	if docs:
-		return True
+		return {"data":docs,'status':True}
 	else:
-		return False
+		return {"data":[],'status':False}
 	
 @frappe.whitelist()
 def get_cart(phone):
