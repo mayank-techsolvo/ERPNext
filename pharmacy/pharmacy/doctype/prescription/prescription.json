@@ -7,9 +7,7 @@
  "field_order": [
   "phone",
   "prescription",
-  "column_break_birm",
-  "orderid",
-  "temproryid"
+  "is_order_linked"
  ],
  "fields": [
   {
@@ -23,27 +21,15 @@
    "label": "Prescription"
   },
   {
-   "fieldname": "column_break_birm",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "orderid",
-   "fieldtype": "Link",
-   "label": "OrderID",
-   "non_negative": 1,
-   "options": "Order Data"
-  },
-  {
-   "fieldname": "temproryid",
-   "fieldtype": "Int",
-   "label": "TempID",
-   "non_negative": 1,
-   "unique": 1
+   "default": "0",
+   "fieldname": "is_order_linked",
+   "fieldtype": "Check",
+   "label": "Is Linked"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-26 13:15:21.464513",
+ "modified": "2024-09-09 19:23:27.128583",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Prescription",
