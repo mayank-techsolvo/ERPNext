@@ -1928,13 +1928,28 @@ def get_cart(phone):
     
     return response
 
+@frappe.whitelist()
+def get_product():
+    # Fetch all products
+    products = frappe.get_all('Product', fields=["*"])
+
+    # Custom sorting function to ensure priority 0 comes last
+    def sort_key(product):
+        priority = product.get('priority', 0)
+        # Assign a large value to priority 0 so that it always comes last
+        return (priority if priority != 0 else float('inf'))
+
+    # Sort products using the custom sorting function
+    sorted_products = sorted(products, key=sort_key)
+
+    return sorted_products
 
 @frappe.whitelist()
-def get_prescription():
+def get_prescription(isOrderLinked=0):
     response = []
 
     # Fetch prescriptions with is_order_linked = 1
-    prescriptions = frappe.get_all('Prescription', filters={'is_order_linked': 1}, fields=['*'])
+    prescriptions = frappe.get_all('Prescription', filters={'is_order_linked': isOrderLinked}, fields=['*'])
 
     # Iterate through each prescription to fetch user details
     for prescription in prescriptions:
