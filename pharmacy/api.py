@@ -1931,10 +1931,25 @@ def get_cart(phone):
 
 @frappe.whitelist()
 def get_prescription():
-	response = []
-	prescriptions = frappe.get_all()
-	print(prescriptions)
-	response.append(prescriptions)
+    response = []
+
+    # Fetch prescriptions with is_order_linked = 1
+    prescriptions = frappe.get_all('Prescription', filters={'is_order_linked': 1}, fields=['*'])
+
+    # Iterate through each prescription to fetch user details
+    for prescription in prescriptions:
+        phone_number = prescription.get('phone')  # Adjust 'phone_number' to the actual field name
+        if phone_number:
+            # Fetch the user whose phone number matches
+            user = frappe.get_all('User', filters={'phone': phone_number}, fields=["first_name","middle_name","last_name","full_name","username","user_image","role_profile_name","gender","birth_date","phone","location","bio","mobile_no","dob","age","name","creation","modified_by","modified","modified_by","owner","docstatus","idx","enabled"]
+			)
+            if user:
+                user_details = user[0]  # Assuming phone_number is unique, get the first match
+                prescription['user_details'] = user_details
+
+    response.append(prescriptions)
+
+    return response
 
 @frappe.whitelist()
 def post_prescription(prescription, orderid, tempid):

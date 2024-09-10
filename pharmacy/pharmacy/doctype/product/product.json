@@ -9,6 +9,7 @@
   "product_name",
   "category_name",
   "price",
+  "priority",
   "column_break_chbk",
   "alternative",
   "icon",
@@ -74,11 +75,17 @@
    "fieldtype": "Link",
    "label": "Category Name",
    "options": "Product Category"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Int",
+   "label": "Priority",
+   "non_negative": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-29 14:51:45.120465",
+ "modified": "2024-09-10 13:15:50.635104",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Product",
