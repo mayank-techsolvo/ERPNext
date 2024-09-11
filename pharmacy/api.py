@@ -187,7 +187,7 @@ def categories():
 						    'category_name': category['name']
 						},
 						limit=10,
-						order_by='price desc',
+						order_by='priority',
 						fields=[
 						    'name',
 							'product_name',
@@ -198,7 +198,8 @@ def categories():
 						    'usage',
 						    'side_effects',
 						    'alternative',
-							'category_name'
+							'category_name',
+							'priority'
 						]
 				    )
 					product_data = []
@@ -213,6 +214,8 @@ def categories():
 						    'usage': product.get('usage', ''),
 						    'side_effects': product.get('side_effects', ''),
 						    'alternative': product.get('alternative', None),
+						    'priority': product.get('priority', None),
+
 						}
 						product_data.append(product_detail)
 						# Add the detailed product to the response
