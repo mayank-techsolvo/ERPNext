@@ -155,11 +155,46 @@
    "fieldtype": "Table",
    "label": "Lab Tests",
    "options": "LIO"
+<<<<<<< Updated upstream
+=======
+  },
+  {
+   "fieldname": "med_status",
+   "fieldtype": "Select",
+   "label": "Med Status",
+   "options": "Ordered\nValidated\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "lab_test_status",
+   "fieldtype": "Select",
+   "label": "Lab Test Status",
+   "options": "Booked\nValidated\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "section_break_otwu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "prescription",
+   "fieldtype": "Table",
+   "label": "Prescription",
+   "options": "Prescribe"
+  },
+  {
+   "fieldname": "reports",
+   "fieldtype": "Table",
+   "label": "Reports",
+   "options": "User Report"
+>>>>>>> Stashed changes
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
+<<<<<<< Updated upstream
  "modified": "2024-09-06 15:24:27.580189",
+=======
+ "modified": "2024-09-05 13:55:43.669459",
+>>>>>>> Stashed changes
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Order Data",
