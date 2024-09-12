@@ -1120,7 +1120,7 @@ def med_orders():
 	try:
 			orders = frappe.get_all(
                 "Orders",
-                fields=['name','status','order_price', 'payment_status', 'modified', 'shipping_price', 'discount', 'payable_amount', 'phone', 'slot_time', 'slot_date']
+                fields=["*"]
             )
 			if orders:
 				ordered_count = len([order for order in orders if order.status == "Ordered"])
@@ -1130,6 +1130,7 @@ def med_orders():
 				shipped = len([order for order in orders if order.status == "Shipped"])
 				total_orders = len(orders)
 				for order in orders:
+					
 					if order.order_traced_location:
 							address = frappe.get_doc("Address", {'name': order.order_traced_location}, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
@@ -1147,7 +1148,6 @@ def med_orders():
 						filters={'parent': order.name, 'category': ['!=', 'Lab Test']},
 						fields=['product', 'quantity' ]
 					)
-					print("oreeder", order_products)
 					if order_products:
 						products = []
 						for order_product in order_products:
@@ -1211,12 +1211,13 @@ def med_orders():
 @frappe.whitelist()
 def order_data(phone=None):
 	response = []
+	
 	try:
 		if phone:
 			orders = frappe.get_all(
 				"Order Data",
 				filters={'phone': phone},
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'order_price', 'test_discount', 'test_shipping_price', 'test_price','lab_test_status', 'med_status', 'is_dr_callback', 'mode_of_payment']
+				fields=["*"]
 			)
 
 			if orders:
@@ -1450,28 +1451,31 @@ def med_order_data():
 		frappe.throw(_("You are not authorized to access this API."))
 	try:	
 			
-			orders = frappe.get_all(
-				"Order Data",
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','discount', 'shipping_price', 'med_status', 'order_price', 'phone', 'mode_of_payment','is_dr_callback']
-			)
+		orders = frappe.get_all(
+			"Order Data",
+			fields=["*"]
+		)
 
-			if orders:
-				# Calculate order counts
-				ordered_count = len([order for order in orders if order.status == "Ordered"])
-				cancelled = len([order for order in orders if order.status == "Cancelled"])
-				delivered = len([order for order in orders if order.status == "Delivered"])
-				packaged = len([order for order in orders if order.status == "Packaged"])
-				shipped = len([order for order in orders if order.status == "Shipped"])
-				total_orders = len(orders)
-				response['orders_info'] = {'total_order': total_orders,
-						'pending_order': ordered_count,
-						'cancelled_order': cancelled,
-						'delivered_order': delivered,
-						'packaged_order': packaged,
-						'shipped_order': shipped,}
-				# Process each order
-				for order in orders:
-					# Fetch address details
+		if orders:
+			# Calculate order counts
+			ordered_count = len([order for order in orders if order.status == "Ordered"])
+			cancelled = len([order for order in orders if order.status == "Cancelled"])
+			delivered = len([order for order in orders if order.status == "Delivered"])
+			packaged = len([order for order in orders if order.status == "Packaged"])
+			shipped = len([order for order in orders if order.status == "Shipped"])
+			total_orders = len(orders)
+			response['orders_info'] = {'total_order': total_orders,
+					'pending_order': ordered_count,
+					'cancelled_order': cancelled,
+					'delivered_order': delivered,
+					'packaged_order': packaged,
+					'shipped_order': shipped,}
+			# Process each order
+			for order in orders:
+				# Fetch address details
+				print(frappe.session.user)
+				print(order._assign)
+				if order._assign and frappe.session.user in order._assign:
 					if order.order_traced_location:
 						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
 					else:
@@ -1534,8 +1538,8 @@ def med_order_data():
 					},
 				'products':products
 						})
-			response['orders'] = responseArray
-			return response
+		response['orders'] = responseArray
+		return response
 
 	
 	except frappe.exceptions.AuthenticationError as e:
@@ -1685,7 +1689,7 @@ def lab_order_data():
 	try:
 			orders = frappe.get_all(
 				"Order Data",
-				fields=['name', 'payment_status', 'modified', 'creation', 'payable_amount','test_discount', 'test_shipping_price', 'test_status', 'test_price', 'phone', 'lab_test_status', 'mode_of_payment','is_dr_callback']
+				fields=["*"]
 			)
 
 			if orders:
@@ -1705,72 +1709,73 @@ def lab_order_data():
 				# Process each order
 				for order in orders:
 					# Fetch address details
-					if order.order_traced_location:
-						address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
-					else:
-						address = ""
-					prescription = []
-					prescrip = frappe.get_all(
-						"Prescribe",  # Replace with the correct child table doctype name
-						filters={'parent': order.name},
-						fields=['prescription'])
-					for prescribe in prescrip:
-							pre = frappe.get_all('Prescription',filters={'name':prescribe.prescription}, fields=['prescription', 'name'])
-							if (pre):
-								prescription.append({"id":pre[0].name, "url":pre[0].prescription})
+					if order._assign and frappe.session.user in order._assign:
+						if order.order_traced_location:
+							address = frappe.get_doc("Address", order.order_traced_location, ["deliver_to","name","pincode","address_line1","address_line2","city", "mobile_no", "default"])
+						else:
+							address = ""
+						prescription = []
+						prescrip = frappe.get_all(
+							"Prescribe",  # Replace with the correct child table doctype name
+							filters={'parent': order.name},
+							fields=['prescription'])
+						for prescribe in prescrip:
+								pre = frappe.get_all('Prescription',filters={'name':prescribe.prescription}, fields=['prescription', 'name'])
+								if (pre):
+									prescription.append({"id":pre[0].name, "url":pre[0].prescription})
+							
 						
-					
-					test_orders = frappe.get_all(
-						"LIO",  # Replace with the correct child table doctype name
-						filters={'parent': order.name},
-						fields=['name','product', 'price', 'slot_time', 'slot_date', 'quantity', 'test_status']
-					)
-					lab_tests = []
-					for test_order in test_orders:
-						product_details = frappe.get_all(
-							"Product",  # Replace with the correct product doctype name
-							filters={'name': test_order.product},
-							fields=[
-								'name',
-								'product_name',
-								'icon',
-								'expiry',
-								'description',
-								'usage',
-								'side_effects',
-								'alternative',
-								'category_name'
-							]
+						test_orders = frappe.get_all(
+							"LIO",  # Replace with the correct child table doctype name
+							filters={'parent': order.name},
+							fields=['name','product', 'price', 'slot_time', 'slot_date', 'quantity', 'test_status']
 						)
-						if product_details:
-								product_details[0]['id'] = test_order.name
-								product_details[0]['slot_time'] = test_order.slot_time
-								product_details[0]['slot_date'] = test_order.slot_date
-								product_details[0]['price'] = test_order.price
-								product_details[0]['status'] = test_order.test_status
-								product_details[0]['quantity'] = test_order.quantity
-								lab_tests.append(product_details[0])
-					if lab_tests:
-						responseArray.append({
-							'category':'Lab Test',
-							'order_id': order.name,
-							'user': get_user_info_by_phone(order.phone),
-							'address': address,
-							'modified': order.modified,
-							'creation': order.creation,
-							'payable_amount': order.payable_amount,
-							'prescription': prescription,
-							'mode_of_payment':order.mode_of_payment,
-							'is_dr_callback':order.is_dr_callback,
-							'payment_status': order.payment_status,
-							'pricing':{
-						'discount': order.test_discount,
-						'shipping_price': order.test_shipping_price,
-						'status':order.lab_test_status,
-						'order_price':order.test_price,
-						},
-						'products':lab_tests
-							})
+						lab_tests = []
+						for test_order in test_orders:
+							product_details = frappe.get_all(
+								"Product",  # Replace with the correct product doctype name
+								filters={'name': test_order.product},
+								fields=[
+									'name',
+									'product_name',
+									'icon',
+									'expiry',
+									'description',
+									'usage',
+									'side_effects',
+									'alternative',
+									'category_name'
+								]
+							)
+							if product_details:
+									product_details[0]['id'] = test_order.name
+									product_details[0]['slot_time'] = test_order.slot_time
+									product_details[0]['slot_date'] = test_order.slot_date
+									product_details[0]['price'] = test_order.price
+									product_details[0]['status'] = test_order.test_status
+									product_details[0]['quantity'] = test_order.quantity
+									lab_tests.append(product_details[0])
+						if lab_tests:
+							responseArray.append({
+								'category':'Lab Test',
+								'order_id': order.name,
+								'user': get_user_info_by_phone(order.phone),
+								'address': address,
+								'modified': order.modified,
+								'creation': order.creation,
+								'payable_amount': order.payable_amount,
+								'prescription': prescription,
+								'mode_of_payment':order.mode_of_payment,
+								'is_dr_callback':order.is_dr_callback,
+								'payment_status': order.payment_status,
+								'pricing':{
+							'discount': order.test_discount,
+							'shipping_price': order.test_shipping_price,
+							'status':order.lab_test_status,
+							'order_price':order.test_price,
+							},
+							'products':lab_tests
+								})
 			response['orders'] = responseArray
 			return response
 
