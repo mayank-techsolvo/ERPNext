@@ -187,7 +187,7 @@ def categories():
 						    'category_name': category['name']
 						},
 						limit=10,
-						order_by='priority',
+						order_by='priority desc',
 						fields=[
 						    'name',
 							'product_name',
@@ -1929,8 +1929,8 @@ def get_cart(phone):
         # Update the cart with the list of prescription details
         cart['prescription'] = prescription_data
 
-        catergory_data = product_category_dict.get(cart['category'], [])
-        cart['category'] = catergory_data.category_name
+        category_data = product_category_dict.get(cart['category'], [])
+        cart['category'] = category_data.category_name
 
         response.append(cart)
     
