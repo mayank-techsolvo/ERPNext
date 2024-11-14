@@ -1,0 +1,31 @@
+{
+ "attach_print": 0,
+ "channel": "Email",
+ "condition": "",
+ "creation": "2024-09-20 10:03:26.397906",
+ "days_in_advance": 0,
+ "docstatus": 0,
+ "doctype": "Notification",
+ "document_type": "Prescription",
+ "enabled": 1,
+ "event": "New",
+ "idx": 0,
+ "is_standard": 1,
+ "message": "There is a new prescription uploaded.",
+ "modified": "2024-11-13 11:58:33.582725",
+ "modified_by": "Administrator",
+ "module": "Pharmacy",
+ "name": "Prescription Notification",
+ "owner": "Administrator",
+ "recipients": [
+  {
+   "cc": "rajatsinghkushwaha@gmail.com\nmradulmishra010@gmail.com\nshubhamgu94@gmail.com\nshriharienterprises01052024@gmail.com",
+   "receiver_by_role": "Script Manager"
+  }
+ ],
+ "send_system_notification": 0,
+ "send_to_all_assignees": 0,
+ "sender": "Info",
+ "sender_email": "mail@techsolvo.com",
+ "subject": "New Prescription Ordered"
+}

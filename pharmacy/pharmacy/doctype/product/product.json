@@ -9,6 +9,7 @@
   "product_name",
   "category_name",
   "price",
+  "mrp",
   "column_break_chbk",
   "alternative",
   "icon",
@@ -80,11 +81,16 @@
    "fieldname": "priority",
    "fieldtype": "Data",
    "label": "Priority"
+  },
+  {
+   "fieldname": "mrp",
+   "fieldtype": "Data",
+   "label": "MRP"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-10 15:27:49.003198",
+ "modified": "2024-11-11 15:54:48.572914",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "Product",

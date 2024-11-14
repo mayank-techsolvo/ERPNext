@@ -1,226 +1,233 @@
 {
-  "actions": [],
-  "allow_rename": 1,
-  "autoname": "SMILE-MD-.#####",
-  "creation": "2024-08-14 18:18:41.029813",
-  "doctype": "DocType",
-  "engine": "InnoDB",
-  "field_order": [
-    "phone",
-    "payable_amount",
-    "is_dr_callback",
-    "column_break_tdqi",
-    "mode_of_payment",
-    "payment_status",
-    "order_traced_location",
-    "section_break_otwu",
-    "prescription",
-    "reports",
-    "section_break_bwqt",
-    "med_status",
-    "discount",
-    "order_price",
-    "shipping_price",
-    "products",
-    "lab_section",
-    "lab_test_status",
-    "test_discount",
-    "test_price",
-    "test_shipping_price",
-    "lab_tests"
-  ],
-  "fields": [
-    {
-      "fieldname": "phone",
-      "fieldtype": "Data",
-      "in_list_view": 1,
-      "label": "Phone",
-      "reqd": 1
-    },
-    {
-      "fieldname": "payable_amount",
-      "fieldtype": "Float",
-      "label": "Payable Amount"
-    },
-    {
-      "default": "0",
-      "fieldname": "is_dr_callback",
-      "fieldtype": "Check",
-      "label": "Dr Callback Request"
-    },
-    {
-      "fieldname": "column_break_tdqi",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "mode_of_payment",
-      "fieldtype": "Select",
-      "label": "Mode of Payment",
-      "options": "\nCash On Delivery\nUPI"
-    },
-    {
-      "fieldname": "payment_status",
-      "fieldtype": "Select",
-      "label": "Payment Status",
-      "options": "\nPaid\nUnpaid"
-    },
-    {
-      "fieldname": "order_traced_location",
-      "fieldtype": "Link",
-      "label": "Order Traced Location",
-      "options": "Address"
-    },
-    {
-      "fieldname": "section_break_otwu",
-      "fieldtype": "Section Break"
-    },
-    {
-      "fieldname": "prescription",
-      "fieldtype": "Table",
-      "label": "Prescription",
-      "options": "Prescribe"
-    },
-    {
-      "fieldname": "reports",
-      "fieldtype": "Table",
-      "label": "Reports",
-      "options": "User Report"
-    },
-    {
-      "fieldname": "section_break_bwqt",
-      "fieldtype": "Section Break",
-      "label": "Med"
-    },
-    {
-      "fieldname": "med_status",
-      "fieldtype": "Select",
-      "label": "Med Status",
-      "options": "Ordered\nValidated\nProcessing\nCompleted\nCancelled"
-    },
-    {
-      "fieldname": "discount",
-      "fieldtype": "Float",
-      "label": "Discount"
-    },
-    {
-      "fieldname": "order_price",
-      "fieldtype": "Float",
-      "in_list_view": 1,
-      "label": "Order Price",
-      "non_negative": 1
-    },
-    {
-      "fieldname": "shipping_price",
-      "fieldtype": "Float",
-      "label": "Shipping Price"
-    },
-    {
-      "fieldname": "products",
-      "fieldtype": "Table",
-      "label": "Products",
-      "options": "PIO"
-    },
-    {
-      "fieldname": "lab_section",
-      "fieldtype": "Section Break",
-      "label": "Lab"
-    },
-    {
-      "fieldname": "lab_test_status",
-      "fieldtype": "Select",
-      "label": "Lab Test Status",
-      "options": "Booked\nValidated\nProcessing\nCompleted\nCancelled"
-    },
-    {
-      "fieldname": "test_discount",
-      "fieldtype": "Float",
-      "label": "Test Discount"
-    },
-    {
-      "fieldname": "test_price",
-      "fieldtype": "Float",
-      "in_list_view": 1,
-      "label": "Test Price",
-      "non_negative": 1
-    },
-    {
-      "fieldname": "test_shipping_price",
-      "fieldtype": "Float",
-      "in_list_view": 1,
-      "label": "Test Shipping Price",
-      "non_negative": 1
-    },
-    {
-      "fieldname": "lab_tests",
-      "fieldtype": "Table",
-      "label": "Lab Tests",
-      "options": "LIO"
-    },
-    {
-      "fieldname": "med_status",
-      "fieldtype": "Select",
-      "label": "Med Status",
-      "options": "Ordered\nValidated\nProcessing\nCompleted\nCancelled"
-    },
-    {
-      "fieldname": "lab_test_status",
-      "fieldtype": "Select",
-      "label": "Lab Test Status",
-      "options": "Booked\nValidated\nProcessing\nCompleted\nCancelled"
-    },
-    {
-      "fieldname": "section_break_otwu",
-      "fieldtype": "Section Break"
-    },
-    {
-      "fieldname": "prescription",
-      "fieldtype": "Table",
-      "label": "Prescription",
-      "options": "Prescribe"
-    },
-    {
-      "fieldname": "reports",
-      "fieldtype": "Table",
-      "label": "Reports",
-      "options": "User Report"
-    }
-  ],
-  "index_web_pages_for_search": 1,
-  "links": [],
-  "modified": "2024-09-06 15:24:27.580189",
-  "modified_by": "Administrator",
-  "module": "Pharmacy",
-  "name": "Order Data",
-  "naming_rule": "Expression (old style)",
-  "owner": "Administrator",
-  "permissions": [
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "System Manager",
-      "share": 1,
-      "write": 1
-    },
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "Guest",
-      "select": 1,
-      "share": 1,
-      "write": 1
-    }
-  ],
-  "sort_field": "creation",
-  "sort_order": "DESC",
-  "states": []
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "SMILE-MD-.#####",
+ "creation": "2024-08-14 18:18:41.029813",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "phone",
+  "payable_amount",
+  "is_dr_callback",
+  "invoice",
+  "column_break_tdqi",
+  "mode_of_payment",
+  "payment_status",
+  "order_traced_location",
+  "section_break_bwqt",
+  "products",
+  "med_status",
+  "discount",
+  "order_price",
+  "shipping_price",
+  "lab_section",
+  "lab_test_status",
+  "test_discount",
+  "test_price",
+  "test_shipping_price",
+  "lab_tests",
+  "section_break_otwu",
+  "prescription",
+  "reports"
+ ],
+ "fields": [
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Phone",
+   "reqd": 1
+  },
+  {
+   "fieldname": "payable_amount",
+   "fieldtype": "Float",
+   "label": "Payable Amount"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_dr_callback",
+   "fieldtype": "Check",
+   "label": "Dr Callback Request"
+  },
+  {
+   "fieldname": "column_break_tdqi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mode_of_payment",
+   "fieldtype": "Select",
+   "label": "Mode of Payment",
+   "options": "\nCash On Delivery\nUPI"
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "\nPaid\nUnpaid"
+  },
+  {
+   "fieldname": "order_traced_location",
+   "fieldtype": "Link",
+   "label": "Order Traced Location",
+   "options": "Address"
+  },
+  {
+   "fieldname": "section_break_otwu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "prescription",
+   "fieldtype": "Table",
+   "label": "Prescription",
+   "options": "Prescribe"
+  },
+  {
+   "fieldname": "reports",
+   "fieldtype": "Table",
+   "label": "Reports",
+   "options": "User Report"
+  },
+  {
+   "fieldname": "section_break_bwqt",
+   "fieldtype": "Section Break",
+   "label": "Med"
+  },
+  {
+   "fieldname": "med_status",
+   "fieldtype": "Select",
+   "label": "Med Status",
+   "options": "Ordered\nValidated\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "discount",
+   "fieldtype": "Float",
+   "label": "Discount"
+  },
+  {
+   "fieldname": "order_price",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Order Price",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "shipping_price",
+   "fieldtype": "Float",
+   "label": "Shipping Price"
+  },
+  {
+   "default": "1",
+   "fieldname": "products",
+   "fieldtype": "Table",
+   "label": "Products",
+   "options": "PIO"
+  },
+  {
+   "fieldname": "lab_section",
+   "fieldtype": "Section Break",
+   "label": "Lab"
+  },
+  {
+   "fieldname": "lab_test_status",
+   "fieldtype": "Select",
+   "label": "Lab Test Status",
+   "options": "Booked\nValidated\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "test_discount",
+   "fieldtype": "Float",
+   "label": "Test Discount"
+  },
+  {
+   "fieldname": "test_price",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Test Price",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "test_shipping_price",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Test Shipping Price",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "lab_tests",
+   "fieldtype": "Table",
+   "label": "Lab Tests",
+   "options": "LIO"
+  },
+  {
+   "fieldname": "med_status",
+   "fieldtype": "Select",
+   "label": "Med Status",
+   "options": "Ordered\nValidated\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "lab_test_status",
+   "fieldtype": "Select",
+   "label": "Lab Test Status",
+   "options": "Booked\nValidated\nProcessing\nCompleted\nCancelled"
+  },
+  {
+   "fieldname": "section_break_otwu",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "prescription",
+   "fieldtype": "Table",
+   "label": "Prescription",
+   "options": "Prescribe"
+  },
+  {
+   "fieldname": "reports",
+   "fieldtype": "Table",
+   "label": "Reports",
+   "options": "User Report"
+  },
+  {
+   "fieldname": "invoice",
+   "fieldtype": "Attach",
+   "label": "Invoice"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-14 17:22:19.599983",
+ "modified_by": "Administrator",
+ "module": "Pharmacy",
+ "name": "Order Data",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
 }

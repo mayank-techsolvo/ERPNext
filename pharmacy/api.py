@@ -4,6 +4,53 @@ from frappe import _
 import string
 from werkzeug.utils import secure_filename
 
+# Hook function
+def on_update_prescription(doc, method):
+    print("HOOKS")
+    print(doc.get("is_order_linked"))
+    is_order_linked = doc.get("is_order_linked")
+
+    if not is_order_linked:
+        # Create order only if not already linked
+        order_placed = frappe.get_doc({
+            "doctype": "Order Data",
+            "phone": doc.get("phone")
+        })
+        order_placed.insert(ignore_permissions=True)
+		
+        print(order_placed.get("name"))
+        print(doc.get("name"))
+
+        # Create the Prescribe record
+        prescribe = frappe.get_doc({
+            "doctype": "Prescribe",
+            "prescription": doc.get("name"),
+            "parent": order_placed.get("name"),
+            "parenttype": "Order Data"  # Changed from "User" to match actual parenttype
+        })
+        prescribe.insert(ignore_permissions=True)
+        # Link the prescription to the order
+        order_doc = frappe.get_doc("Order Data", order_placed.get("name"))
+
+        # If prescription is a child table, use `append` to add rows
+        order_doc.append("prescription", {
+			"prescription": doc.get("name")
+		})
+        order_doc.order_traced_location = doc.get("address_id")
+        order_doc.save()
+
+        # Insert the Prescribe document
+        
+        frappe.db.commit()  # Ensure all changes are committed
+
+        # Update the prescription to mark that the order is linked
+        doc.is_order_linked = 1
+        doc.save()
+
+    else:
+        print("Order already linked.")
+
+
 def sign_up( phone, role, email) -> tuple[int, str]:
 	# full_name = first_name + " " + last_name
 		user = frappe.get_doc(

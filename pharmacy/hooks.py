@@ -12,6 +12,13 @@ app_email = "mayank.raghuvanshi@techsolvo.com"
 app_license = "mit"
 # required_apps = []
 
+
+
+doc_events = {
+    "Prescription": {
+        "after_insert": "pharmacy.api.on_update_prescription"
+    }
+}
 # Includes in <head>
 # ------------------
 

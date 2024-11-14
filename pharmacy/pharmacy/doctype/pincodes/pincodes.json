@@ -1,77 +1,87 @@
 {
-  "actions": [],
-  "allow_import": 1,
-  "autoname": "hash",
-  "creation": "2024-08-07 20:06:00.614686",
-  "doctype": "DocType",
-  "engine": "InnoDB",
-  "field_order": ["city", "pin_code", "delivery_charge", "service_time"],
-  "fields": [
-    {
-      "fieldname": "city",
-      "fieldtype": "Data",
-      "label": "City"
-    },
-    {
-      "fieldname": "pin_code",
-      "fieldtype": "Data",
-      "label": "Pin Code"
-    },
-    {
-      "fieldname": "service_time",
-      "fieldtype": "Data",
-      "label": "Service Time"
-    }
-  ],
-  "index_web_pages_for_search": 1,
-  "links": [],
-  "modified": "2024-08-22 18:32:44.434577",
-  "modified_by": "Administrator",
-  "module": "Pharmacy",
-  "name": "Pincodes",
-  "naming_rule": "Random",
-  "owner": "Administrator",
-  "permissions": [
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "System Manager",
-      "share": 1,
-      "write": 1
-    },
-    {
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "Shopkeeper",
-      "share": 1,
-      "write": 1
-    },
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "Customer",
-      "share": 1,
-      "write": 1
-    }
-  ],
-  "search_fields": "city, pin_code",
-  "show_title_field_in_link": 1,
-  "sort_field": "modified",
-  "sort_order": "DESC",
-  "states": [],
-  "title_field": "city",
-  "translated_doctype": 1
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "hash",
+ "creation": "2024-08-07 20:06:00.614686",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "city",
+  "pin_code",
+  "service_time",
+  "delivery_charge"
+ ],
+ "fields": [
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "pin_code",
+   "fieldtype": "Data",
+   "label": "Pin Code"
+  },
+  {
+   "fieldname": "service_time",
+   "fieldtype": "Data",
+   "label": "Service Time"
+  },
+  {
+   "fieldname": "delivery_charge",
+   "fieldtype": "Data",
+   "label": "Delivery Charge"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-11-12 15:45:07.784073",
+ "modified_by": "Administrator",
+ "module": "Pharmacy",
+ "name": "Pincodes",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Shopkeeper",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Customer",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "search_fields": "city, pin_code",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "city",
+ "translated_doctype": 1
 }

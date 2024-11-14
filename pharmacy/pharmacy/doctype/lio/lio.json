@@ -12,7 +12,8 @@
   "category",
   "slot_date",
   "slot_time",
-  "test_status"
+  "test_status",
+  "unit_price"
  ],
  "fields": [
   {
@@ -23,11 +24,11 @@
    "options": "Product"
   },
   {
-   "fetch_from": "product_name.price",
+   "fetch_from": ".",
    "fieldname": "price",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Price"
+   "label": "Total Price"
   },
   {
    "fetch_from": "product.category_name",
@@ -52,16 +53,23 @@
    "options": "Booked\nConfirmed\nSample Collected\nProcessing\nResults Ready"
   },
   {
+   "default": "1",
    "fieldname": "quantity",
    "fieldtype": "Int",
    "in_list_view": 1,
    "label": "Quantity"
+  },
+  {
+   "fetch_from": "product.price",
+   "fieldname": "unit_price",
+   "fieldtype": "Float",
+   "label": "Unit Price"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-09-09 17:47:45.022369",
+ "modified": "2024-11-14 18:10:42.634844",
  "modified_by": "Administrator",
  "module": "Pharmacy",
  "name": "LIO",
